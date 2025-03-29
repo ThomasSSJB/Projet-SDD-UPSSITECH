@@ -9,11 +9,17 @@
 struct Place{
   Trajet T;
   Voyageur V;
+  int etat;
 };
 
-Place init_place(Trajet T, Voyageur V){
+Place init_place(Trajet T, Voyageur V, int etat){
   Place P = malloc(sizeof(struct Place));
   P->T = T;
   P->V = V;
+  P->etat = 0;
   return P;
+}
+
+int estPrise(Place P){
+  return (P->etat == 1);
 }

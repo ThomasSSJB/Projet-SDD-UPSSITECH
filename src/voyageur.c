@@ -19,3 +19,7 @@ Voyageur init_Voyageur(int id, char* mdp, Trajet T){
   V->T = T;
   return V;
 }
+
+void changer_mdp(Voyageur V, char* new_mdp){
+  V->mdp = new_mdp;
+}
