@@ -5,3 +5,17 @@
 #include "../include/voyageur.h"
 #include "../include/pile.h"
 #include "../include/node.h"
+
+struct Voyageur{
+  int id;
+  char* mdp;
+  Trajet T;
+};
+
+Voyageur init_Voyageur(int id, char* mdp, Trajet T){
+  Voyageur V = malloc(sizeof(struct Voyageur));
+  V->id = id;
+  V->mdp = mdp;
+  V->T = T;
+  return V;
+}
