@@ -1,7 +1,7 @@
 # Définition des variables
-EXEC = prog
-SRC = $(wildcard *.c)
-OBJ = $(SRC:%.c=%.o)
+EXEC = bin/prog
+SRC = $(wildcard src/*.c)
+OBJ = $(SRC:src/%.c=lib/%.o)
 FLAGS = -Wall -ggdb -Iinclude -lm
 
 # Règle principale
@@ -13,7 +13,7 @@ $(EXEC): $(OBJ)
 	@echo "Exécutable généré : $(EXEC)"
 
 # Génération des fichiers objets à partir des fichiers sources
-%.o: %.c
+lib/%.o: src/%.c
 	@gcc -c $< -o $@ $(FLAGS)
 	@echo "Compilation : $< -> $@"
 
@@ -23,5 +23,5 @@ run: all
 
 # Supprime les .o
 clean:
-	@rm *.o
+	@rm lib/*.o
 	@echo "Dossier lib nettoyé"
