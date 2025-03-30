@@ -75,26 +75,27 @@ int confirmer_mdp(char* mdp, char* confirmation){
   return strcmp(confirmation, mdp);
 }
 
-
-void changer_mdp(Voyageur V){
-
+void changer_mdp(Voyageur V) {
   char reponse[20];
   int choix;
 
-  printf("Entrez votre mot de passe actuel : \n") ;
-  scanf(" %s", reponse);
+  while (1) {
+      printf("Entrez votre mot de passe actuel : \n");
+      scanf(" %s", reponse);
 
-  if (strcmp(reponse, V->mdp) == 0){
-    char* nouveau = nouveau_mdp(V);
-    V->mdp = nouveau;
-    printf("Votre mot de passe a bien été modifier\n");
-    } else {
-    printf("Mot de passe incorrect ! Taper 1 si vous voulez réessayer, 0 si vous avez oublier votre mot de passe : \n");
-    scanf(" %d", &choix);
-    if (choix == 0){
-      nouveau_mdp(V);
-    }else{
-      changer_mdp(V);
-    }
+      if (strcmp(reponse, V->mdp) == 0) {
+          char* nouveau = nouveau_mdp(V);
+          V->mdp = nouveau;
+          printf("Votre mot de passe a bien été modifié\n");
+          break;
+      } else {
+          printf("Mot de passe incorrect ! Tapez 1 pour réessayer, 0 si vous avez oublié votre mot de passe : \n");
+          scanf("%d", &choix);
+          if (choix == 0) {
+              char* nouveau = nouveau_mdp(V);
+              V->mdp = nouveau;
+              break;
+          }
+      }
   }
 }
