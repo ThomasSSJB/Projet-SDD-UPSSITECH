@@ -5,8 +5,14 @@
 
 typedef struct Voyageur * Voyageur;
 
-Voyageur init_Voyageur(int, char*, Trajet);
-void changer_mdp(Voyageur, char*);
+Voyageur init_Voyageur(int);
+
+//Fonctions pour gérer les mdp
+char* nouveau_mdp(Voyageur);
+char* getMdp(Voyageur);
+int verifier_mdp();
+int confirmer_mdp(char*, char*);
+void changer_mdp(Voyageur);
 
 //Fonction qui proposera un trajet (ou plusieurs ?) au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
 Trajet recherche_trajet(Gare, Gare);

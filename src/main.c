@@ -23,5 +23,9 @@ int main(){
 	affiche_pile(P);
 
 	printf("\n");
+
+	Voyageur V1 = init_Voyageur(1);
+	changer_mdp(V1);
+
 	return 0;
 }
