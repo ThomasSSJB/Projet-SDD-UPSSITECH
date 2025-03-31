@@ -54,7 +54,7 @@ char* nouveau_mdp(Voyageur V) {
 
 int verifier_mdp(char* mdp){
   char caracteres_speciaux[] = ",;&*+" ;
-  char chiffres[] = "123456789" ;
+  char chiffres[] = "0123456789" ;
   char majuscules[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ;
   char minuscules[] = "abcdefghijklmnopqrstuvwxyz" ;
   if (strlen(mdp) < 8 || strpbrk(mdp, caracteres_speciaux) == NULL || strpbrk(mdp, chiffres) == NULL || strpbrk(mdp, majuscules) == NULL || strpbrk(mdp, minuscules) == NULL){
