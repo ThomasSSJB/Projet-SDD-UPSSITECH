@@ -23,5 +23,9 @@ run: all
 
 # Supprime les .o
 clean:
-	@rm lib/*.o
-	@echo "Dossier lib nettoyé"
+	@if ls lib/*.o 1> /dev/null 2>&1; then \
+		rm lib/*.o; \
+		echo "Dossier lib nettoyé"; \
+	else \
+		echo "Aucun fichier .o à supprimer"; \
+	fi
