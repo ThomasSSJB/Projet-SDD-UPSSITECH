@@ -13,19 +13,16 @@ int main(){
 	Gare G2 = init_gare("Lyon", 1.5);
 	Gare G3 = init_gare("Marseille", 3);
 
-	Pile P = init_pile();
-	empiler(P, G1);
-	empiler(P, G2);
-	empiler(P, G3);
-	affiche_pile(P);
+	Pile gares = init_pile();
+	Trajet T3 = init_trajet(gares, 3);
+	empiler(gares, G1);
+	empiler(gares, G2);
+	empiler(gares, G3);
 
-	depiler(P);
-	affiche_pile(P);
+	affiche_trajet(T3);
+	inverse_trajet(T3);
+	affiche_trajet(T3);
 
 	printf("\n");
-
-	Voyageur V1 = init_Voyageur(1);
-	changer_mdp(V1);
-
 	return 0;
 }
