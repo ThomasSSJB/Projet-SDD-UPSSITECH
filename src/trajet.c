@@ -33,8 +33,17 @@ void ajouter_gare(Trajet T, Gare G) {
   empiler(T->gares, G);
 }
 
-void supprimer_gare(Trajet T) {
-  depiler(T->gares);
+void supprimer_gare(Trajet T, Gare G) {
+  Pile P = init_pile();
+  while (! est_vide(T->gares)) {
+    Gare G_temp = depiler(T->gares);
+    if (G_temp != G) {
+      empiler(P, G_temp);
+    }
+  }
+  while (! est_vide(P)){
+    empiler(T->gares, depiler(P));
+  }
 }
 
 //Fonctions permettant de gérer les trajets

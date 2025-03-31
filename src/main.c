@@ -15,12 +15,10 @@ int main(){
 
 	Pile gares = init_pile();
 	Trajet T3 = init_trajet(gares, 3);
-	empiler(gares, G1);
-	empiler(gares, G2);
-	empiler(gares, G3);
+	ajouter_gare(T3, G1);
+	ajouter_gare(T3, G2);
+	ajouter_gare(T3, G3);
 
-	affiche_trajet(T3);
-	inverse_trajet(T3);
 	affiche_trajet(T3);
 
 	printf("\n");

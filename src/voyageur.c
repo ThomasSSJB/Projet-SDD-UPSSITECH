@@ -20,6 +20,7 @@ Voyageur init_Voyageur(int id){
   return V;
 }
 
+//Fonctions pour gérer les mdp
 
 char* getMdp(Voyageur V){
   return V->mdp;
@@ -99,3 +100,13 @@ void changer_mdp(Voyageur V) {
       }
   }
 }
+
+//Fonction qui proposera un trajet (ou plusieurs ?) au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
+
+Trajet recherche_trajet(Gare G1, Gare G2);
+Trajet selectionner_trajet(Trajet T, Voyageur V);
+
+//Fonctions qui permettront de réserver/modifier un trajet (éventuellement l'annuler aussi ou alors une fonction dédiée à l'annulation ?)
+
+Trajet reservation_trajet(Trajet T, Voyageur V);
+Trajet modification_trajet(Trajet T, Voyageur V);

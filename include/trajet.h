@@ -4,14 +4,14 @@
 typedef struct Gare * Gare;
 typedef struct Trajet * Trajet;
 
-//include après la déclaration des structures pour éviter les dépendances ciruclaires
+//include après la déclaration des structures pour éviter les dépendances circulaires
 #include "../include/pile.h"
 
 //Fonctions permettant de gérer les gares
 Gare init_gare(char*, float);
 void affiche_gare(Gare);
 void ajouter_gare(Trajet, Gare);
-void supprimer_gare(Trajet);
+void supprimer_gare(Trajet, Gare);
 
 //Fonctions permettant de gérer les trajets
 Trajet init_trajet(Pile, int);
