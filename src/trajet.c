@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <cjson/cJSON.h>
 #include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
@@ -23,6 +24,10 @@ Gare init_gare(char* nom, float temps){
   G->nom = nom;
   G->temps = temps;
   return G;
+}
+
+int get_trajet_id(Trajet T){
+  return T->id;
 }
 
 void affiche_gare(Gare G){
@@ -78,6 +83,67 @@ void affiche_trajet(Trajet T){
     }
     empiler(T->gares, G);
   }
+}
+
+
+void afficher_trajet_json(const char *fichier, int idRecherche) {
+  // Ouvrir le fichier JSON
+  FILE *file = fopen(fichier, "r");
+  if (!file) {
+      printf("Erreur : Impossible d'ouvrir %s\n", fichier);
+      return;
+  }
+  
+  // Lire le fichier JSON
+  fseek(file, 0, SEEK_END);
+  long taille = ftell(file);
+  rewind(file);
+  char *jsonData = (char *)malloc(taille + 1);
+  fread(jsonData, 1, taille, file);
+  fclose(file);
+  jsonData[taille] = '\0';
+  
+  // Parser le JSON
+  cJSON *root = cJSON_Parse(jsonData);
+  if (!root) {
+      printf("Erreur : JSON invalide\n");
+      free(jsonData);
+      return;
+  }
+  
+  // Récupérer le tableau des trajets
+  cJSON *trajets = cJSON_GetObjectItem(root, "trajets");
+  if (!trajets || !cJSON_IsArray(trajets)) {
+      printf("Erreur : Structure JSON invalide\n");
+      cJSON_Delete(root);
+      free(jsonData);
+      return;
+  }
+  
+  // Parcourir les trajets
+  int nbTrajets = cJSON_GetArraySize(trajets);
+  for (int i = 0; i < nbTrajets; i++) {
+      cJSON *trajet = cJSON_GetArrayItem(trajets, i);
+      int id = cJSON_GetObjectItem(trajet, "id")->valueint;
+      
+      if (id == idRecherche) {
+          printf("Trajet ID %d :\n", id);
+          cJSON *gares = cJSON_GetObjectItem(trajet, "gares");
+          int nbGares = cJSON_GetArraySize(gares);
+          
+          for (int j = 0; j < nbGares; j++) {
+              cJSON *gare = cJSON_GetArrayItem(gares, j);
+              printf("  - %s (%.1f h)\n", 
+                  cJSON_GetObjectItem(gare, "nom")->valuestring,
+                  cJSON_GetObjectItem(gare, "temps")->valuedouble);
+          }
+          break;
+      }
+  }
+  
+  // Libérer la mémoire
+  cJSON_Delete(root);
+  free(jsonData);
 }
 
 void inverse_trajet(Trajet T){

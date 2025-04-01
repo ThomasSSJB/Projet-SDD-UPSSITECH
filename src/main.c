@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <cjson/cJSON.h>
 #include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
@@ -19,8 +20,8 @@ int main(){
 	ajouter_gare(T3, G2);
 	ajouter_gare(T3, G3);
 
-	affiche_trajet(T3);
-
+	afficher_trajet_json("../JSON/trajets.json", 3);
+	
 	printf("\n");
 	return 0;
 }
