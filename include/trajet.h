@@ -8,7 +8,9 @@ typedef struct Trajet * Trajet;
 #include "../include/pile.h"
 
 //Fonctions permettant de gérer les gares
+
 Gare init_gare(char*, float);
+
 void affiche_gare(Gare);
 void ajouter_gare(Trajet, Gare);
 void supprimer_gare(Trajet, Gare);
