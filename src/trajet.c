@@ -63,94 +63,64 @@ Trajet init_trajet(Pile P, int x){
   return T;
 }
 
-/* void affiche_trajet(Trajet T){
-  Pile P = init_pile();
-  if (! est_vide(T->gares)) {
-    printf("Trajet %d : ", T->id);
-  } else {
-    printf("Le trajet %d est vide.\n", T->id);
-  }
 
-  while (! est_vide(T->gares)) {
-    empiler(P, depiler(T->gares));
-  }
-
-  while (! est_vide(P)) {
-    Gare G = depiler(P);
-    if (G->temps == 0) {
-      printf("%s, ", G->nom);
-    } else if (! est_vide(P)) {
-      printf("%s (+%.1fh), ", G->nom, G->temps);
-    } else {
-      printf("%s (+%.1fh)\n", G->nom, G->temps);
-    }
-    empiler(T->gares, G);
-  }
-} */
-
-
-void inverse_trajet(Trajet T){
-  float temps_total;
-  if (! est_vide(T->gares)) {
-    Gare der = depiler(T->gares);
-    temps_total = der->temps;
-    empiler(T->gares, der);
-  }
-  Pile P = init_pile();
-  while (! est_vide(T->gares)) {
-    Gare G = depiler(T->gares);
-    G->temps = temps_total - G->temps;
-    empiler(P, G);
-  }
-  T->gares = P;
-  printf("Trajet %d inversé.\n", T->id);
-}
-
-
-void affiche_trajet(int id_recherche) {
+Trajet charger_trajet(int id_recherche, int est_inverse) {
   FILE* f = fopen("trajets.txt", "r");
   if (!f) {
-      perror("Erreur lors de l'ouverture du fichier trajets.txt");
-      return;
+      perror("Erreur d'ouverture du fichier trajets.txt");
+      return NULL;
   }
 
-  char ligne[256];
+  char ligne[256], nom_trajet[50], nom_gare[50];
   int id;
-  char nom_trajet[50];
-  char nom_gare[50];
-  float temps;
+  float temps, max_temps = 0;
 
   Pile pile = init_pile();
 
-  // Lire les gares du trajet demandé
   while (fgets(ligne, sizeof(ligne), f)) {
       if (ligne[0] == '#' || ligne[0] == '\n') continue;
 
-      if (sscanf(ligne, "%d;%49[^;];%49[^;];%f", &id, nom_trajet, nom_gare, &temps) == 4) {
-          if (id == id_recherche) {
-              char* nom_gare_dyn = malloc(strlen(nom_gare) + 1);
-              strcpy(nom_gare_dyn, nom_gare);
-              Gare g = init_gare(nom_gare_dyn, temps);
-              empiler(pile, g);
-          }
+      if (sscanf(ligne, "%d;%49[^;];%49[^;];%f", &id, nom_trajet, nom_gare, &temps) == 4 && id == id_recherche) {
+          if (temps > max_temps) max_temps = temps;
+
+          char* nom_dyn = malloc(strlen(nom_gare) + 1);
+          strcpy(nom_dyn, nom_gare);
+          Gare g = init_gare(nom_dyn, temps);
+          empiler(pile, g);
       }
   }
-
   fclose(f);
 
-  // Vérification si aucun arrêt trouvé
   if (est_vide(pile)) {
-      printf("Aucun trajet avec l'ID %d trouvé.\n", id_recherche);
-      return;
+      printf("Aucun trajet trouvé avec l’ID %d.\n", id_recherche);
+      return NULL;
   }
 
-  // Affichage dans le bon ordre
-  printf("Trajet %d : ", id_recherche);
+  Trajet trajet = init_trajet(pile, id_recherche);
+
+  if (est_inverse) {
+      Pile pile_inverse = init_pile();
+      while (!est_vide(pile)) {
+          Gare g = depiler(pile);
+          g->temps = max_temps - g->temps;
+          empiler(pile_inverse, g);
+      }
+      trajet->gares = pile_inverse;
+  }
+
+  return trajet;
+}
+
+
+void affiche_trajet(int id, int inverse) {
+  Trajet t = charger_trajet(id, inverse);
+  if (!t) return;
+
+  printf("Trajet %d%s : ", t->id, inverse ? " (retour)" : "");
   Pile temp = init_pile();
 
-  while (!est_vide(pile)) {
-      Gare g = depiler(pile);
-      empiler(temp, g); // Inverser l'ordre
+  while (!est_vide(t->gares)) {
+      empiler(temp, depiler(t->gares));
   }
 
   while (!est_vide(temp)) {
@@ -162,5 +132,6 @@ void affiche_trajet(int id_recherche) {
       } else {
           printf("%s (+%.1fh)\n", g->nom, g->temps);
       }
+      empiler(t->gares, g);
   }
 }

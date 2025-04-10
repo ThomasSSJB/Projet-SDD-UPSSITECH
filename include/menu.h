@@ -1,8 +1,9 @@
 #ifndef __MENU_H__
 #define __MENU_H__
 
-void afficher_administrateur_menu();
-void afficher_controlleur_menu();
-void afficher_utilisateur_menu();
+void menu_principal();
+void menu_administrateur();
+void menu_controlleur();
+void menu_utilisateur();
 
 #endif

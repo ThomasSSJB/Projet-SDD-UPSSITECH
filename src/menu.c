@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ncurses.h>
 #include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
