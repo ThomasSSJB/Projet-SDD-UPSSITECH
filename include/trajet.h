@@ -9,14 +9,46 @@ typedef struct Trajet * Trajet;
 
 //Fonctions permettant de gérer les gares
 
-Gare init_gare(char*, float);
+/**
+ * @brief Initialise une gare
+ * 
+ * @param nom Le nom de la gare
+ * @param temps Le temps depuis la gare de départ
+ * @return Gare 
+ */
+Gare init_gare(char* nom, float temps);
 
-void affiche_gare(Gare);
-void ajouter_gare(Trajet, Gare);
-void supprimer_gare(Trajet, Gare);
+/**
+ * @brief Affiche une gare
+ * 
+ * @param G La gare a afficher
+ */
+void affiche_gare(Gare G);
 
-//Fonctions permettant de gérer les trajets
-Trajet init_trajet(Pile, int);
+/**
+ * @brief Ajoute une gare dans un trajet
+ * 
+ * @param T Le trajet auquel on souahite ajouter une gare
+ * @param G La gare a ajouter
+ */
+void ajouter_gare(Trajet T, Gare G);
+
+/**
+ * @brief Supprime une gare dans un trajet
+ * 
+ * @param T Le trajet auquel on souhaite supprimer une gare
+ * @param G La gare a supprimer
+ */
+void supprimer_gare(Trajet T, Gare G);
+
+/**
+ * @brief Initialise un trajet
+ * 
+ * @param P La pile de gares
+ * @param id L'identifiant du trajet
+ * @return Trajet 
+ */
+Trajet init_trajet(Pile P, int x);
 
 /* void affiche_trajet(Trajet);*/
 Trajet ajouter_trajet(Trajet);

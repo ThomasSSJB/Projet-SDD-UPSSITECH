@@ -55,10 +55,10 @@ void supprimer_gare(Trajet T, Gare G) {
 
 //Fonctions permettant de gérer les trajets
 
-Trajet init_trajet(Pile P, int x){
+Trajet init_trajet(Pile P, int id){
   Trajet T = malloc(sizeof(struct Trajet));
   T->gares = P;
-  T->id = x;
+  T->id = id;
   T->places_dispo = 10;
   return T;
 }
