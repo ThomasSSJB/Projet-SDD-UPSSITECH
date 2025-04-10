@@ -21,5 +21,5 @@ Place init_place(Trajet T, Voyageur V, int etat){
 }
 
 int estPrise(Place P){
-  return (P->etat == 1);
+  return P->etat;
 }

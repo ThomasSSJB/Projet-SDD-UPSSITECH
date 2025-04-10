@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cjson/cJSON.h>
+#include <ncurses.h>
 #include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
@@ -10,17 +11,10 @@
 int main(){
 	printf("\n");
 
-	Gare G1 = init_gare("Paris", 0);
-	Gare G2 = init_gare("Lyon", 1.5);
-	Gare G3 = init_gare("Marseille", 3);
-
-	Pile gares = init_pile();
-	Trajet T3 = init_trajet(gares, 3);
-	ajouter_gare(T3, G1);
-	ajouter_gare(T3, G2);
-	ajouter_gare(T3, G3);
-
-	afficher_trajet_json("../JSON/trajets.json", 3);
+	affiche_trajet(1);
+	affiche_trajet(2);
+	affiche_trajet(3);
+	affiche_trajet(4);
 	
 	printf("\n");
 	return 0;

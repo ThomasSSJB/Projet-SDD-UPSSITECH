@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <cjson/cJSON.h>
 #include "../include/place.h"
 #include "../include/trajet.h"
@@ -14,6 +15,7 @@ struct Gare{
 
 struct Trajet{
   Pile gares;
+  int places_dispo;
   int id;
 };
 
@@ -57,10 +59,11 @@ Trajet init_trajet(Pile P, int x){
   Trajet T = malloc(sizeof(struct Trajet));
   T->gares = P;
   T->id = x;
+  T->places_dispo = 10;
   return T;
 }
 
-void affiche_trajet(Trajet T){
+/* void affiche_trajet(Trajet T){
   Pile P = init_pile();
   if (! est_vide(T->gares)) {
     printf("Trajet %d : ", T->id);
@@ -83,68 +86,8 @@ void affiche_trajet(Trajet T){
     }
     empiler(T->gares, G);
   }
-}
+} */
 
-
-void afficher_trajet_json(const char *fichier, int idRecherche) {
-  // Ouvrir le fichier JSON
-  FILE *file = fopen(fichier, "r");
-  if (!file) {
-      printf("Erreur : Impossible d'ouvrir %s\n", fichier);
-      return;
-  }
-  
-  // Lire le fichier JSON
-  fseek(file, 0, SEEK_END);
-  long taille = ftell(file);
-  rewind(file);
-  char *jsonData = (char *)malloc(taille + 1);
-  fread(jsonData, 1, taille, file);
-  fclose(file);
-  jsonData[taille] = '\0';
-  
-  // Parser le JSON
-  cJSON *root = cJSON_Parse(jsonData);
-  if (!root) {
-      printf("Erreur : JSON invalide\n");
-      free(jsonData);
-      return;
-  }
-  
-  // Récupérer le tableau des trajets
-  cJSON *trajets = cJSON_GetObjectItem(root, "trajets");
-  if (!trajets || !cJSON_IsArray(trajets)) {
-      printf("Erreur : Structure JSON invalide\n");
-      cJSON_Delete(root);
-      free(jsonData);
-      return;
-  }
-  
-  // Parcourir les trajets
-  int nbTrajets = cJSON_GetArraySize(trajets);
-  for (int i = 0; i < nbTrajets; i++) {
-      cJSON *trajet = cJSON_GetArrayItem(trajets, i);
-      int id = cJSON_GetObjectItem(trajet, "id")->valueint;
-      
-      if (id == idRecherche) {
-          printf("Trajet ID %d :\n", id);
-          cJSON *gares = cJSON_GetObjectItem(trajet, "gares");
-          int nbGares = cJSON_GetArraySize(gares);
-          
-          for (int j = 0; j < nbGares; j++) {
-              cJSON *gare = cJSON_GetArrayItem(gares, j);
-              printf("  - %s (%.1f h)\n", 
-                  cJSON_GetObjectItem(gare, "nom")->valuestring,
-                  cJSON_GetObjectItem(gare, "temps")->valuedouble);
-          }
-          break;
-      }
-  }
-  
-  // Libérer la mémoire
-  cJSON_Delete(root);
-  free(jsonData);
-}
 
 void inverse_trajet(Trajet T){
   float temps_total;
@@ -161,4 +104,63 @@ void inverse_trajet(Trajet T){
   }
   T->gares = P;
   printf("Trajet %d inversé.\n", T->id);
+}
+
+
+void affiche_trajet(int id_recherche) {
+  FILE* f = fopen("trajets.txt", "r");
+  if (!f) {
+      perror("Erreur lors de l'ouverture du fichier trajets.txt");
+      return;
+  }
+
+  char ligne[256];
+  int id;
+  char nom_trajet[50];
+  char nom_gare[50];
+  float temps;
+
+  Pile pile = init_pile();
+
+  // Lire les gares du trajet demandé
+  while (fgets(ligne, sizeof(ligne), f)) {
+      if (ligne[0] == '#' || ligne[0] == '\n') continue;
+
+      if (sscanf(ligne, "%d;%49[^;];%49[^;];%f", &id, nom_trajet, nom_gare, &temps) == 4) {
+          if (id == id_recherche) {
+              char* nom_gare_dyn = malloc(strlen(nom_gare) + 1);
+              strcpy(nom_gare_dyn, nom_gare);
+              Gare g = init_gare(nom_gare_dyn, temps);
+              empiler(pile, g);
+          }
+      }
+  }
+
+  fclose(f);
+
+  // Vérification si aucun arrêt trouvé
+  if (est_vide(pile)) {
+      printf("Aucun trajet avec l'ID %d trouvé.\n", id_recherche);
+      return;
+  }
+
+  // Affichage dans le bon ordre
+  printf("Trajet %d : ", id_recherche);
+  Pile temp = init_pile();
+
+  while (!est_vide(pile)) {
+      Gare g = depiler(pile);
+      empiler(temp, g); // Inverser l'ordre
+  }
+
+  while (!est_vide(temp)) {
+      Gare g = depiler(temp);
+      if (g->temps == 0) {
+          printf("%s, ", g->nom);
+      } else if (!est_vide(temp)) {
+          printf("%s (+%.1fh), ", g->nom, g->temps);
+      } else {
+          printf("%s (+%.1fh)\n", g->nom, g->temps);
+      }
+  }
 }

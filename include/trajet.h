@@ -15,8 +15,7 @@ void supprimer_gare(Trajet, Gare);
 
 //Fonctions permettant de gérer les trajets
 Trajet init_trajet(Pile, int);
-void affiche_trajet(Trajet);
-void afficher_trajet_json(const char*, int);
+/* void affiche_trajet(Trajet);*/
 void inverse_trajet(Trajet);
 Trajet ajouter_trajet(Trajet);
 Trajet modifier_trajet(Trajet);
@@ -24,5 +23,7 @@ Trajet supprimer_trajet(Trajet);
 
 //Fonction qui permettra de rechercher le trajet d'un voyageur avec son numéro d'identification
 Trajet trajet_voyageur(int);
+
+void affiche_trajet(int);
 
 #endif

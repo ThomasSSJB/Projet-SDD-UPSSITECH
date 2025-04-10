@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "trajet.h": "c",
+    "voyageur.h": "c",
+    "pile.h": "c",
+    "place.h": "c",
+    "stdio.h": "c",
+    "node.h": "c",
+    "stdlib.h": "c"
+  }
+}

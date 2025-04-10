@@ -2,7 +2,7 @@
 EXEC = bin/prog
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:src/%.c=lib/%.o)
-FLAGS = -Wall -ggdb -Iinclude -lm -lcjson
+FLAGS = -Wall -ggdb -Iinclude -lm -lcjson -lncurses
 # Règle principale
 all: $(EXEC)
 

@@ -19,7 +19,9 @@ Trajet recherche_trajet(Gare, Gare);
 Trajet selectionner_trajet(Trajet, Voyageur);
 
 //Fonctions qui permettront de réserver/modifier un trajet (éventuellement l'annuler aussi ou alors une fonction dédiée à l'annulation ?)
-Trajet reservation_trajet(Trajet, Voyageur);
 Trajet modification_trajet(Trajet, Voyageur);
+Trajet annulation_trajet(Trajet, Voyageur);
+
+void modifier_itineraire(Voyageur);
 
 #endif

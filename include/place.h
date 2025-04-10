@@ -10,5 +10,7 @@ Place init_place(Trajet, Voyageur, int);
 
 //Permet de tester si une place est libre ou non | renvoie 1 si la place est prise 0 sinon
 int estPrise(Place);
+void reserver_place(Place, Voyageur);
+void annuler_place(Place, Voyageur);
 
 #endif
