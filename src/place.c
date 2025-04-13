@@ -16,7 +16,7 @@ Place init_place(Trajet T, Voyageur V, int etat){
   Place P = malloc(sizeof(struct Place));
   P->T = T;
   P->V = V;
-  P->etat = 0;
+  P->etat = 1;
   return P;
 }
 

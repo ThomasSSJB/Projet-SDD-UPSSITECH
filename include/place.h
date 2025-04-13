@@ -6,10 +6,25 @@
 
 typedef struct Place * Place;
 
-Place init_place(Trajet, Voyageur, int);
+/**
+ * @brief Initialise une place
+ * 
+ * @param T Trajet associé à la place créée 
+ * @param V Voyageur associé à la place créée
+ * @param etat Indique si la plca est disponible (0) ou pas (1)
+ * @return Place 
+ */
+Place init_place(Trajet T, Voyageur V, int etat);
 
-//Permet de tester si une place est libre ou non | renvoie 1 si la place est prise 0 sinon
-int estPrise(Place);
+/**
+ * @brief Test si une place est prise
+ * 
+ * @param P Place en question
+ * @return 1 si la place est prise, 0 sinon
+ */
+int estPrise(Place P);
+
+
 void reserver_place(Place, Voyageur);
 void annuler_place(Place, Voyageur);
 

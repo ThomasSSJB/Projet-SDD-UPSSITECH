@@ -5,10 +5,44 @@
 
 typedef struct Node * Node;
 
-Node init_node(Gare);
-Node get_next_node(Node);
-Gare get_node_gare(Node);
-void set_next_node(Node, Node);
-void set_node_gare(Node, Gare);
+/**
+ * @brief Permet d'initialiser un nouveau node
+ * 
+ * @param G Une gare (les éléments des nodes sont des gares)
+ * @return Node 
+ */
+Node init_node(Gare G);
+
+/**
+ * @brief Permet d'obtenir le node suivant
+ * 
+ * @param n Un node
+ * @return Node 
+ */
+Node get_next_node(Node n);
+
+/**
+ * @brief Permet d'obtenir l'élément contenu dans un node
+ * 
+ * @param n Un node
+ * @return Gare 
+ */
+Gare get_node_gare(Node n);
+
+/**
+ * @brief Permet de modifier le prochain node
+ * 
+ * @param n Un node
+ * @param next Le node suivant
+ */
+void set_next_node(Node n, Node next);
+
+/**
+ * @brief Permet de modifier l'élément contenu dans le node
+ * 
+ * @param n Un node
+ * @param G Une gare
+ */
+void set_node_gare(Node n, Gare G);
 
 #endif
