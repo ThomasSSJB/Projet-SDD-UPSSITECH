@@ -132,3 +132,37 @@ void affiche_trajet(int id, int inverse) {
       empiler(t->gares, g);
   }
 }
+
+int affiche_trajet_ncurses(int id, int inverse, int ligne_depart) {
+  Trajet t = charger_trajet(id, inverse);
+  if (!t) return ligne_depart;
+
+  char buffer[128];
+  sprintf(buffer, "Trajet %d%s : ", t->id, inverse ? " (retour)" : "");
+  mvprintw(ligne_depart, 2, "%s", buffer);
+  ligne_depart++;
+
+  Pile temp = init_pile();
+
+  while (!est_vide(t->gares)) {
+      empiler(temp, depiler(t->gares));
+  }
+
+  while (!est_vide(temp)) {
+      Gare g = depiler(temp);
+      char ligne[100];
+
+      if (g->temps == 0) {
+          snprintf(ligne, sizeof(ligne), "%s", g->nom);
+      } else if (!est_vide(temp)) {
+          snprintf(ligne, sizeof(ligne), "%s (+%.1fh)", g->nom, g->temps);
+      } else {
+          snprintf(ligne, sizeof(ligne), "%s (+%.1fh)", g->nom, g->temps);
+      }
+
+      mvprintw(ligne_depart++, 4, "%s", ligne);
+      empiler(t->gares, g);
+  }
+
+  return ligne_depart;
+}

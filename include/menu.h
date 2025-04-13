@@ -1,9 +1,45 @@
 #ifndef __MENU_H__
 #define __MENU_H__
 
+typedef struct OptionMenu * OptionMenu;
+typedef struct Menu * Menu;
+
+// Initialisation des structures
+OptionMenu init_optionmenu();
+Menu init_menu();
+
+// Menus Principaux
+void init_screen();
 void menu_principal();
+void affiche_menu(Menu);
+int menu_connection();
+
+// Menus pour l'Administateur
 void menu_administrateur();
-void menu_controlleur();
+void menu_gestion_trajets();
+void menu_changer_mdp();
+void menu_exportation();
+
+void menu_ajouter_trajet();
+void menu_modifier_trajet();
+void menu_supprimer_trajet();
+void menu_ajouter_gare();
+void menu_supprimer_gare();
+
+void menu_exporter_trajet();
+void menu_exporter_voyageur();
+
+// Menus pour le Contrôleur
+void menu_controleur();
+void menu_verifier_voyageur();
+void menu_modifier_coord();
+
+// Menus l'Utilisateur
 void menu_utilisateur();
+void menu_rechercher_trajet();
+void menu_reserver_trajet();
+void menu_reservation();
+void menu_modifier_reservation();
+void menu_annuler_reservation();
 
 #endif

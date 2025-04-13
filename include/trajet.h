@@ -82,4 +82,11 @@ Trajet supprimer_trajet(Trajet);
 //Fonction qui permettra de rechercher le trajet d'un voyageur avec son numéro d'identification
 Trajet trajet_voyageur(int);
 
+
+Trajet charger_trajet(int, int);
+void affiche_trajet(int, int);
+
+//Fonctions liées aux menus
+int affiche_trajet_ncurses(int, int, int);
+
 #endif
