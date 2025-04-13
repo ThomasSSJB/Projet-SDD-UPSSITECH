@@ -28,12 +28,16 @@ Gare init_gare(char* nom, float temps){
   return G;
 }
 
-int get_trajet_id(Trajet T){
-  return T->id;
+Trajet init_trajet(Pile P, int id){
+  Trajet T = malloc(sizeof(struct Trajet));
+  T->gares = P;
+  T->id = id;
+  T->places_dispo = 10;
+  return T;
 }
 
-void affiche_gare(Gare G){
-  printf("%s (+%.1fh)\n", G->nom, G->temps);
+int get_trajet_id(Trajet T){
+  return T->id;
 }
 
 void ajouter_gare(Trajet T, Gare G) {
@@ -53,16 +57,9 @@ void supprimer_gare(Trajet T, Gare G) {
   }
 }
 
-//Fonctions permettant de gérer les trajets
-
-Trajet init_trajet(Pile P, int id){
-  Trajet T = malloc(sizeof(struct Trajet));
-  T->gares = P;
-  T->id = id;
-  T->places_dispo = 10;
-  return T;
+void affiche_gare(Gare G){
+  printf("%s (+%.1fh)\n", G->nom, G->temps);
 }
-
 
 Trajet charger_trajet(int id_recherche, int est_inverse) {
   FILE* f = fopen("trajets.txt", "r");

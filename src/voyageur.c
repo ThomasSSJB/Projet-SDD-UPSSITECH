@@ -20,12 +20,9 @@ Voyageur init_Voyageur(int id){
   return V;
 }
 
-//Fonctions pour gérer les mdp
-
 char* getMdp(Voyageur V){
   return V->mdp;
 }
-
 
 char* nouveau_mdp(Voyageur V) {
 

@@ -5,14 +5,53 @@
 
 typedef struct Voyageur * Voyageur;
 
-Voyageur init_Voyageur(int);
+/**
+ * @brief Initialise un voyageur
+ * 
+ * @param id Identifiant du voyageur
+ * @return Voyageur 
+ */
+Voyageur init_Voyageur(int id);
 
-//Fonctions pour gérer les mdp
-char* nouveau_mdp(Voyageur);
-char* getMdp(Voyageur);
-int verifier_mdp();
-int confirmer_mdp(char*, char*);
-void changer_mdp(Voyageur);
+/**
+ * @brief Récupère le mdp d'un voyageur
+ * 
+ * @param V Un voyageur
+ * @return char* 
+ */
+char* getMdp(Voyageur V);
+
+/**
+ * @brief Permet de créer un nouveau mdp pour un voyageur
+ * 
+ * @param V Un voyageur
+ * @return char* 
+ */
+char* nouveau_mdp(Voyageur V);
+
+/**
+ * @brief Permet de vérifier que le mdp est conforme (8 caractères, un chiffres, ...)
+ * 
+ * @param mdp Un mot de passe
+ * @return int 
+ */
+int verifier_mdp(char* mdp);
+
+/**
+ * @brief Quand l'utilisateur créer ou change de mdp, il doit l'entrer deux fois pour le confirmer
+ * 
+ * @param mdp Le mot de passe souhaité
+ * @param confirmation La confirmation
+ * @return int 
+ */
+int confirmer_mdp(char* mdp, char* confirmation);
+
+/**
+ * @brief Permet à un voyageur de changer de mdp
+ * 
+ * @param V 
+ */
+void changer_mdp(Voyageur V);
 
 //Fonction qui proposera un trajet (ou plusieurs ?) au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
 Trajet recherche_trajet(Gare, Gare);
