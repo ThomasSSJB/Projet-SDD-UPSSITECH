@@ -11,6 +11,8 @@
 struct Voyageur{
   int id;
   char* mdp;
+  char gare_depart[50];
+  char gare_arrivee[50];
 };
 
 
@@ -23,6 +25,18 @@ Voyageur init_Voyageur(int id){
 
 char* getMdp(Voyageur V){
   return V->mdp;
+}
+
+int getId(Voyageur V){
+  return V->id;
+}
+
+char* getGareDepart(Voyageur V){
+  return V->gare_depart;
+}
+
+char* getGareArrivee(Voyageur V){
+  return V->gare_arrivee;
 }
 
 char* nouveau_mdp(Voyageur V) {

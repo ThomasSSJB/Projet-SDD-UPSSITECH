@@ -22,6 +22,30 @@ Voyageur init_Voyageur(int id);
 char* getMdp(Voyageur V);
 
 /**
+ * @brief Get the Id object
+ * 
+ * @param V Un voyageur
+ * @return int 
+ */
+int getId(Voyageur V);
+
+/**
+ * @brief Get the Gare Depart object
+ * 
+ * @param V Un voyageur
+ * @return char* 
+ */
+char* getGareDepart(Voyageur V);
+
+/**
+ * @brief Get the Gare Arrivee object
+ * 
+ * @param V Un voyageur
+ * @return char* 
+ */
+char* getGareArrivee(Voyageur V);
+
+/**
  * @brief Permet de créer un nouveau mdp pour un voyageur
  * 
  * @param V Un voyageur

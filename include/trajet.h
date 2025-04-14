@@ -73,6 +73,13 @@ Trajet charger_trajet(int id_recherche, int est_inverse);
  */
 void affiche_trajet(int id, int inverse);
 
+/**
+ * @brief Permet d'exporter un trajet dans un fichier json
+ * 
+ * @param T Un trajet
+ */
+void exporter_trajet_json(Trajet T);
+
 
 
 Trajet ajouter_trajet(Trajet);
