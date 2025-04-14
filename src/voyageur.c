@@ -100,6 +100,14 @@ void changer_mdp(Voyageur V) {
   }
 }
 
+int verifier_connexion(Voyageur V, char* mdp_connexion, int id_connexion){
+  if (V->id == id_connexion && confirmer_mdp(V->mdp, mdp_connexion) == 0){
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
 //Fonction qui proposera un trajet (ou plusieurs ?) au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
 
 Trajet recherche_trajet(Gare G1, Gare G2);

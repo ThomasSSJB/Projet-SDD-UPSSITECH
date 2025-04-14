@@ -158,3 +158,4 @@ int affiche_trajet_ncurses(int id, int inverse, int y, int x) {
   }
   return y;
 }
+
