@@ -53,6 +53,16 @@ int confirmer_mdp(char* mdp, char* confirmation);
  */
 void changer_mdp(Voyageur V);
 
+/**
+ * @brief Permet de vérifier l'identifiant et le mot de passe d'un voyageur lors de sa connexion
+ * 
+ * @param V Un voyageur
+ * @param mdp_connexion Le mdp entré à la connexion
+ * @param id_connexion L'identifiant entré à la connexion
+ * @return 0 si les infotmations de connections sont bonnes, 1 sinon
+ */
+int verifier_connexion(Voyageur V, char* mdp_connexion, int id_connexion);
+
 //Fonction qui proposera un trajet (ou plusieurs ?) au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
 Trajet recherche_trajet(Gare, Gare);
 Trajet selectionner_trajet(Trajet, Voyageur);
