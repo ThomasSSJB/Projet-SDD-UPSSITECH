@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ncurses.h>
 #include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
@@ -56,12 +57,13 @@ int verifier_mdp(char* mdp){
   char majuscules[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ;
   char minuscules[] = "abcdefghijklmnopqrstuvwxyz" ;
   if (strlen(mdp) < 8 || strpbrk(mdp, caracteres_speciaux) == NULL || strpbrk(mdp, chiffres) == NULL || strpbrk(mdp, majuscules) == NULL || strpbrk(mdp, minuscules) == NULL){
-    printf("Votre mot de passe doit contenir au moins : \n");
-    printf("  - 8 caractères\n");
-    printf("  - Un chiffre [0-9]\n");
-    printf("  - Une majuscule [A-Z]\n");
-    printf("  - Une minuscule [a-z]\n");
-    printf("  - 1 caractère spécial [, ; & * +]\n");
+    mvprintw(12, 3, "---------------------");
+    mvprintw(14, 3, "Votre mot de passe doit contenir au moins : \n");
+    mvprintw(15, 3, "  - 8 caractères\n");
+    mvprintw(16, 3, "  - Un chiffre [0-9]\n");
+    mvprintw(17, 3, "  - Une majuscule [A-Z]\n");
+    mvprintw(18, 3, "  - Une minuscule [a-z]\n");
+    mvprintw(19, 3, "  - 1 caractère spécial [, ; & * +]\n");
     return 1;
   } else {
     return 0;

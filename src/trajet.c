@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <cjson/cJSON.h>
+#include <ncurses.h>
 #include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
@@ -75,11 +76,10 @@ Trajet charger_trajet(int id_recherche, int est_inverse) {
   Pile pile = init_pile();
 
   while (fgets(ligne, sizeof(ligne), f)) {
-      if (ligne[0] == '#' || ligne[0] == '\n') continue;
+    if (ligne[0] == '#' || ligne[0] == '\n') continue;
 
-      if (sscanf(ligne, "%d;%49[^;];%49[^;];%f", &id, nom_trajet, nom_gare, &temps) == 4 && id == id_recherche) {
-          if (temps > max_temps) max_temps = temps;
-
+    if (sscanf(ligne, "%d;%49[^;];%49[^;];%f", &id, nom_trajet, nom_gare, &temps) == 4 && id == id_recherche) {
+        if (temps > max_temps) max_temps = temps;
           char* nom_dyn = malloc(strlen(nom_gare) + 1);
           strcpy(nom_dyn, nom_gare);
           Gare g = init_gare(nom_dyn, temps);
@@ -96,11 +96,11 @@ Trajet charger_trajet(int id_recherche, int est_inverse) {
   Trajet trajet = init_trajet(pile, id_recherche);
 
   if (est_inverse) {
-      Pile pile_inverse = init_pile();
-      while (!est_vide(pile)) {
-          Gare g = depiler(pile);
-          g->temps = max_temps - g->temps;
-          empiler(pile_inverse, g);
+    Pile pile_inverse = init_pile();
+    while (!est_vide(pile)) {
+        Gare g = depiler(pile);
+        g->temps = max_temps - g->temps;
+        empiler(pile_inverse, g);
       }
       trajet->gares = pile_inverse;
   }
@@ -133,36 +133,28 @@ void affiche_trajet(int id, int inverse) {
   }
 }
 
-int affiche_trajet_ncurses(int id, int inverse, int ligne_depart) {
+int affiche_trajet_ncurses(int id, int inverse, int y, int x) {
   Trajet t = charger_trajet(id, inverse);
-  if (!t) return ligne_depart;
+  if (!t) return 0;
 
-  char buffer[128];
-  sprintf(buffer, "Trajet %d%s : ", t->id, inverse ? " (retour)" : "");
-  mvprintw(ligne_depart, 2, "%s", buffer);
-  ligne_depart++;
-
+  mvprintw(y, x, "Trajet %d%s : ", t->id, inverse ? " (retour)" : "");
   Pile temp = init_pile();
+  y++;
+  x += 3;
 
   while (!est_vide(t->gares)) {
-      empiler(temp, depiler(t->gares));
+    empiler(temp, depiler(t->gares));
   }
 
   while (!est_vide(temp)) {
       Gare g = depiler(temp);
-      char ligne[100];
-
       if (g->temps == 0) {
-          snprintf(ligne, sizeof(ligne), "%s", g->nom);
-      } else if (!est_vide(temp)) {
-          snprintf(ligne, sizeof(ligne), "%s (+%.1fh)", g->nom, g->temps);
+          mvprintw(y, x, "| %s", g->nom);
       } else {
-          snprintf(ligne, sizeof(ligne), "%s (+%.1fh)", g->nom, g->temps);
+          mvprintw(y, x, "| %s (+%.1fh)", g->nom, g->temps);
       }
-
-      mvprintw(ligne_depart++, 4, "%s", ligne);
       empiler(t->gares, g);
+      y++;
   }
-
-  return ligne_depart;
+  return y;
 }
