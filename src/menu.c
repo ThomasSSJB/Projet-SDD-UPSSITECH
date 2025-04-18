@@ -107,7 +107,6 @@ int menu_connexion() {
 
   char id[16] = "";
   char mdp[16] = "";
-  int highlight = 0;
 
   mvprintw(0, 1, "============================");
   mvprintw(1, 4, "> Connexion");
@@ -118,12 +117,10 @@ int menu_connexion() {
 
   echo();
   move(5, 3);
-  highlight++;
   getnstr(id, 16);
 
   // noecho();
   move(8, 3);
-  highlight++;
   getnstr(mdp, 16);
   verifier_mdp(mdp);
 
@@ -257,17 +254,37 @@ void menu_rechercher_trajet() {
   init_screen();
   clear();
 
+  char depart[16] = "";
+  char arrivee[16] = "";
+
   mvprintw(0, 1, "============================");
   mvprintw(1, 4, "> Rechercher un Trajet");
   mvprintw(2, 1, "============================");
+  mvprintw(4, 3, "| Entrez une gare de départ");
+  mvprintw(7, 3, "| Entrez une gare d'arrivée");
+  mvprintw(10, 3, "Valider");
+
+  echo();
+  move(5, 3);
+  getnstr(depart, 16);
+
+  move(8, 3);
+  getnstr(arrivee, 16);
+
   attron(A_REVERSE);
-  mvprintw(4, 4, "Retour");
+  refresh();
+  noecho();
+  move(10, 3);
+  attron(A_REVERSE);
+  mvprintw(10, 3, "Valider");
+  attroff(A_REVERSE);
+
+  refresh();
 
   while (1){
     int ch = getch();
     if (ch == 10) {
-      attroff(A_REVERSE);
-      endwin();
+      // recherche_trajet(depart, arrivee);
       break;
     }
   }

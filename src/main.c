@@ -10,7 +10,7 @@
 #include "../include/menu.h"
 
 int main(){
-	menu_principal();
+	// menu_principal();
 
 	Pile P = init_pile();
 	Gare G1 = init_gare("Bordeaux", 0);
@@ -25,5 +25,6 @@ int main(){
 
 	exporter_trajet_json(T);
 
+	recherche_trajet("Paris", "Toulouse");
 	return 0;
 }

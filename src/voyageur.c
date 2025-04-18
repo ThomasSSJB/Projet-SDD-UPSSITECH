@@ -8,6 +8,8 @@
 #include "../include/pile.h"
 #include "../include/node.h"
 
+#define MAX_LINE 256
+
 struct Voyageur{
   int id;
   char* mdp;
@@ -124,20 +126,60 @@ int verifier_connexion(Voyageur V, char* mdp_connexion, int id_connexion){
 
 //Fonction qui proposera un trajet (ou plusieurs ?) au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
 
-Trajet recherche_trajet(char* depart, char* arrivee) {
+Trajet* recherche_trajet(char* depart, char* arrivee) {
   FILE* f = fopen("trajets.txt", "r");
   if (!f) {
       perror("Erreur d'ouverture du fichier trajets.txt");
       return NULL;
   }
-  while (fgets(ligne, sizeof(ligne), f))
+  
+  Trajet T[2];
 
+  char line[MAX_LINE];
+  int trajetTrouve = 0;
+  int lectureActive = 0;
+  int id, prevID = -1;
+  char nom[100], gare[100];
+  float temps;
+
+  fgets(line, MAX_LINE, f);
+
+  while (fgets(line, MAX_LINE, f)) {
+    if (sscanf(line, "%d;%99[^;];%99[^;];%f", &id, nom, gare, &temps) == 4) {
+      // Si on change de trajet, réinitialiser l'état
+      if (id != prevID) {
+        lectureActive = 0;
+      }
+
+      if (!lectureActive && strcmp(gare, depart) == 0) {
+        lectureActive = 1;
+        trajetTrouve = 1;
+        printf("Itinéraire trouvé dans le trajet \"%s\" :\n", nom);
+      }
+
+      if (lectureActive) {
+        printf("  %s (%.1f h)\n", gare, temps);
+        if (strcmp(gare, arrivee) == 0) {
+          printf("Arrivée atteinte.\n");
+          break;
+        }
+      }
+
+    prevID = id;
+  }
 }
+
+if (!trajetTrouve) {
+    printf("Aucun itinéraire trouvé de %s à %s.\n", depart, arrivee);
+}
+
+fclose(f);
+}
+
 
 
 Trajet selectionner_trajet(Trajet T, Voyageur V);
 
 //Fonctions qui permettront de réserver/modifier un trajet (éventuellement l'annuler aussi ou alors une fonction dédiée à l'annulation ?)
-
 Trajet reservation_trajet(Trajet T, Voyageur V);
 Trajet modification_trajet(Trajet T, Voyageur V);
