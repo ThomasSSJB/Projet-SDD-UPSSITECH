@@ -124,7 +124,17 @@ int verifier_connexion(Voyageur V, char* mdp_connexion, int id_connexion){
 
 //Fonction qui proposera un trajet (ou plusieurs ?) au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
 
-Trajet recherche_trajet(Gare G1, Gare G2);
+Trajet recherche_trajet(char* depart, char* arrivee) {
+  FILE* f = fopen("trajets.txt", "r");
+  if (!f) {
+      perror("Erreur d'ouverture du fichier trajets.txt");
+      return NULL;
+  }
+  while (fgets(ligne, sizeof(ligne), f))
+
+}
+
+
 Trajet selectionner_trajet(Trajet T, Voyageur V);
 
 //Fonctions qui permettront de réserver/modifier un trajet (éventuellement l'annuler aussi ou alors une fonction dédiée à l'annulation ?)
