@@ -133,7 +133,7 @@ Trajet* recherche_trajet(char* depart, char* arrivee) {
       return NULL;
   }
   
-  Trajet T[2];
+  Trajet* T = malloc(sizeof(struct Trajet));
 
   char line[MAX_LINE];
   int trajetTrouve = 0;
@@ -172,8 +172,8 @@ Trajet* recherche_trajet(char* depart, char* arrivee) {
 if (!trajetTrouve) {
     printf("Aucun itinéraire trouvé de %s à %s.\n", depart, arrivee);
 }
-
 fclose(f);
+return T;
 }
 
 
