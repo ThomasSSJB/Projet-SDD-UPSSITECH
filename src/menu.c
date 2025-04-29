@@ -63,7 +63,6 @@ void menu_principal() {
 
 void affiche_menu(Menu menu) {
   int choix = 0, ch;
-
   int test = 1;
 
   while (test) {
@@ -275,18 +274,27 @@ void menu_rechercher_trajet() {
   refresh();
   noecho();
   move(10, 3);
-  attron(A_REVERSE);
   mvprintw(10, 3, "Valider");
   attroff(A_REVERSE);
-
   refresh();
 
   while (1){
     int ch = getch();
     if (ch == 10) {
-      // recherche_trajet(depart, arrivee);
-      break;
+      int y = recherche_trajet(depart, arrivee);
+      attron(A_REVERSE);
+      refresh();
+      mvprintw(y, 3, "Retour");
+      attroff(A_REVERSE);
+      refresh();
+      while (1) {
+        ch = getch();
+        if (ch==10) {
+          break;
+        }
+      }
     }
+    break;
   }
 }
 

@@ -88,7 +88,7 @@ void changer_mdp(Voyageur V);
 int verifier_connexion(Voyageur V, char* mdp_connexion, int id_connexion);
 
 //Fonction qui proposera un trajet (ou plusieurs ?) au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
-Trajet* recherche_trajet(char* depart, char* arrivee);
+int recherche_trajet(char* depart, char* arrivee);
 Trajet selectionner_trajet(Trajet, Voyageur);
 
 //Fonctions qui permettront de réserver/modifier un trajet (éventuellement l'annuler aussi ou alors une fonction dédiée à l'annulation ?)
