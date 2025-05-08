@@ -270,31 +270,33 @@ void menu_rechercher_trajet() {
   move(8, 3);
   getnstr(arrivee, 16);
 
-  attron(A_REVERSE);
   refresh();
   noecho();
-  move(10, 3);
-  mvprintw(10, 3, "Valider");
-  attroff(A_REVERSE);
-  refresh();
 
-  while (1){
+  attron(A_REVERSE);
+  mvprintw(10, 3, "Valider");
+
+  while (1) {
     int ch = getch();
     if (ch == 10) {
+      attroff(A_REVERSE);
+      attron(A_BOLD);
+      mvprintw(10, 3, "Valider");
+      refresh();
+      attroff(A_BOLD);
       int y = recherche_trajet(depart, arrivee);
       attron(A_REVERSE);
-      refresh();
       mvprintw(y, 3, "Retour");
-      attroff(A_REVERSE);
-      refresh();
+
       while (1) {
-        ch = getch();
-        if (ch==10) {
+        int ch = getch();
+        if (ch == 10) {
+          attroff(A_REVERSE);
           break;
         }
       }
+      break;
     }
-    break;
   }
 }
 
