@@ -5,6 +5,7 @@
 #include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
+#include "../include/gestion.h"
 #include "../include/pile.h"
 #include "../include/node.h"
 #include "../include/menu.h"
@@ -50,14 +51,13 @@ void init_screen() {
 void menu_principal() {
   init_screen();
 
-  OptionMenu Opt1 = init_optionmenu("| Profil Administrateur", menu_administrateur);
-  OptionMenu Opt2 = init_optionmenu("| Profil Contrôleur", menu_controleur);
-  OptionMenu Opt3 = init_optionmenu("| Profil Utilisateur", menu_utilisateur);
-  OptionMenu Opt4 = init_optionmenu("Quitter", NULL);
+  OptionMenu Opt1 = init_optionmenu("| Se Connecter", menu_connexion);
+  OptionMenu Opt2 = init_optionmenu("| Créer un Compte", menu_creation_compte);
+  OptionMenu Opt3 = init_optionmenu("Quitter", NULL);
 
-  OptionMenu liste_options[4] = {Opt1, Opt2, Opt3, Opt4};
+  OptionMenu liste_options[3] = {Opt1, Opt2, Opt3};
 
-  Menu M = init_menu("Menu Principal", 4, liste_options);
+  Menu M = init_menu("Menu Principal", 3, liste_options);
   affiche_menu(M);
 }
 
@@ -67,9 +67,9 @@ void affiche_menu(Menu menu) {
 
   while (test) {
     clear();
-    mvprintw(0, 1, "============================");
+    mvprintw(0, 1, "=============================");
     mvprintw(1, 4, "> %s", menu->titre);
-    mvprintw(2, 1, "============================");
+    mvprintw(2, 1, "=============================");
     for (int i = 0; i < menu->nb_options; i++) {
       if (i == choix)
         attron(A_REVERSE);
@@ -92,6 +92,10 @@ void affiche_menu(Menu menu) {
           endwin();
           test = 0;
           break;
+        } else  if (strcmp(menu->options[choix]->texte, "Se déconnecter") == 0) {
+          endwin();
+          exit(0);
+          break;
         } else {
           menu->options[choix]->action();
         }
@@ -100,44 +104,148 @@ void affiche_menu(Menu menu) {
   }
 }
 
-int menu_connexion() {
+void menu_connexion() {
   init_screen();
   clear();
 
-  char id[16] = "";
+  char id[4] = "";
   char mdp[16] = "";
 
-  mvprintw(0, 1, "============================");
-  mvprintw(1, 4, "> Connexion");
-  mvprintw(2, 1, "============================");
-  mvprintw(4, 3, "| Entrez votre identifiant");
-  mvprintw(7, 3, "| Entrez votre mot de passe");
+  mvprintw(0, 1, "=============================");
+  mvprintw(1, 4, "> Se Connecter");
+  mvprintw(2, 1, "=============================");
+  mvprintw(4, 3, "| Entrez un identifiant");
+  mvprintw(7, 3, "| Entrez un mot de passe");
   mvprintw(10, 3, "Valider");
 
   echo();
   move(5, 3);
   getnstr(id, 16);
-
-  // noecho();
+  id[strcspn(id, "\n")] = '\0';
   move(8, 3);
   getnstr(mdp, 16);
-  verifier_mdp(mdp);
-
-  attron(A_REVERSE);
-  refresh();
   noecho();
-  move(10, 3);
+
   attron(A_REVERSE);
   mvprintw(10, 3, "Valider");
   attroff(A_REVERSE);
 
-  refresh();
+  while (1){
+    int ch = getch();
+    if (ch == 10) {
+      attron(A_BOLD);
+      mvprintw(10, 3, "Valider");
+      attroff(A_BOLD);
+      if (verifier_connexion(id, mdp)) {
+        attron(A_REVERSE);
+        mvprintw(14, 3, "Retour");
+        attroff(A_REVERSE);
+      } else if (id[0] == '0') {
+        attron(A_REVERSE);
+        mvprintw(14, 3, "Accéder au profil Administrateur");
+        while (1) {
+          ch = getch();
+          if (ch == 10) {
+            attroff(A_REVERSE);
+            menu_administrateur();
+            break;
+          }
+        }
+      } else if (id[0] == '1') {
+        attron(A_REVERSE);
+        mvprintw(14, 3, "Accéder au profil Contrôleur");
+        while (1) {
+          ch = getch();
+          if (ch == 10) {
+            attroff(A_REVERSE);
+            menu_controleur();
+            break;
+          }
+        }
+      } else {
+        attron(A_REVERSE);
+        mvprintw(14, 3, "Accéder au profil Voyageur");
+        while (1) {
+          ch = getch();
+          if (ch == 10) {
+            attroff(A_REVERSE);
+            menu_voyageur();
+            break;
+          }
+        }
+      } 
+      while (1) {
+        ch = getch();
+        if (ch == 10) {
+          break;
+        }
+      } break;
+    }
+  }
+}
+
+void menu_creation_compte() {
+  init_screen();
+  clear();
+
+  char id[4] = "";
+  char mdp1[16] = "";
+  char mdp2[16] = "";
+
+  mvprintw(0, 1, "=============================");
+  mvprintw(1, 4, "> Créer un Compte");
+  mvprintw(2, 1, "=============================");
+  mvprintw(4, 3, "| Entrez un identifiant");
+  mvprintw(7, 3, "| Entrez un mot de passe");
+  mvprintw(10, 3, "| Confirmer le mot de passe");
+  mvprintw(13, 3, "Valider");
+
+  echo();
+  move(5, 3);
+  getnstr(id, 16);
+  move(8, 3);
+  getnstr(mdp1, 16);
+  move(11, 3);
+  getnstr(mdp2, 16);
+  noecho();
+
+  attron(A_REVERSE);
+  mvprintw(13, 3, "Valider");
+  attroff(A_REVERSE);
 
   while (1){
     int ch = getch();
     if (ch == 10) {
-      return 1;
+      attron(A_BOLD);
+      mvprintw(13, 3, "Valider");
+      attroff(A_BOLD);
+      if (verifier_id(id)) {
+        attron(A_REVERSE);
+        mvprintw(20, 3, "Retour");
+      } else if (strcmp(mdp1, mdp2) != 0) {
+        mvprintw(15, 3, "Les mots de passe doivent être identiques.");
+        attron(A_REVERSE);
+        mvprintw(17, 3, "Retour");
+      } else if (verifier_mdp(mdp1)) {
+        attron(A_REVERSE);
+        mvprintw(22, 3, "Retour");
+      } else if (ajouter_utilisateur(id, mdp1)) {
+        attron(A_REVERSE);
+        mvprintw(17, 3, "Retour");
+      } else {
+        mvprintw(15, 3, "L'utilisateur %s a été enregistré avec succès !", id);
+        attron(A_REVERSE);
+        mvprintw(17, 3, "Retour");
+      }
+      while (1) {
+        ch = getch();
+        if (ch == 10) {
+          attroff(A_REVERSE);
+          break;
+        }
+      }
     }
+    break;
   }
 }
 
@@ -149,14 +257,12 @@ void menu_administrateur() {
   OptionMenu Opt1 = init_optionmenu("| Gestion des Trajets", menu_gestion_trajets);
   OptionMenu Opt2 = init_optionmenu("| Administration", menu_changer_mdp);
   OptionMenu Opt3 = init_optionmenu("| Exportation", menu_exportation);
-  OptionMenu Opt4 = init_optionmenu("Retour", NULL);
+  OptionMenu Opt4 = init_optionmenu("Se déconnecter", NULL);
 
   OptionMenu liste_options[4] = {Opt1, Opt2, Opt3, Opt4};
 
   Menu M = init_menu("Menu Administrateur", 4, liste_options);
-  if (menu_connexion()) {
-    affiche_menu(M);
-  }
+  affiche_menu(M);
 }
 
 void menu_gestion_trajets() {
@@ -219,7 +325,7 @@ void menu_controleur(){
 
   OptionMenu Opt1 = init_optionmenu("| Vérifier un Voyageur", menu_verifier_voyageur);
   OptionMenu Opt2 = init_optionmenu("| Modifier des coordonnées", menu_changer_mdp);
-  OptionMenu Opt3 = init_optionmenu("Retour", NULL);
+  OptionMenu Opt3 = init_optionmenu("Se déconnecter", NULL);
 
   OptionMenu liste_options[3] = {Opt1, Opt2, Opt3};
 
@@ -233,19 +339,19 @@ void menu_verifier_voyageur(){
 void menu_modifier_coord() {
 }
 
-// Menus pour l'Utilisateur
+// Menus pour le Voyageur
 
-void menu_utilisateur() {
+void menu_voyageur() {
   init_screen();
 
   OptionMenu Opt1 = init_optionmenu("| Rechercher un Trajet", menu_rechercher_trajet);
   OptionMenu Opt2 = init_optionmenu("| Voir tous les Trajets", menu_voir_trajets);
   OptionMenu Opt3 = init_optionmenu("| Réservation", menu_reservation);
-  OptionMenu Opt4 = init_optionmenu("Retour", NULL);
+  OptionMenu Opt4 = init_optionmenu("Se déconnecter", NULL);
 
   OptionMenu liste_options[4] = {Opt1, Opt2, Opt3, Opt4};
 
-  Menu M = init_menu("Menu Utilisateur", 4, liste_options);
+  Menu M = init_menu("Menu Voyageur", 4, liste_options);
   affiche_menu(M);
 }
 
@@ -256,9 +362,9 @@ void menu_rechercher_trajet() {
   char depart[16] = "";
   char arrivee[16] = "";
 
-  mvprintw(0, 1, "============================");
+  mvprintw(0, 1, "=============================");
   mvprintw(1, 4, "> Rechercher un Trajet");
-  mvprintw(2, 1, "============================");
+  mvprintw(2, 1, "=============================");
   mvprintw(4, 3, "| Entrez une gare de départ");
   mvprintw(7, 3, "| Entrez une gare d'arrivée");
   mvprintw(10, 3, "Valider");
@@ -266,15 +372,14 @@ void menu_rechercher_trajet() {
   echo();
   move(5, 3);
   getnstr(depart, 16);
-
   move(8, 3);
   getnstr(arrivee, 16);
-
   refresh();
   noecho();
 
   attron(A_REVERSE);
   mvprintw(10, 3, "Valider");
+  refresh();
 
   while (1) {
     int ch = getch();
@@ -284,29 +389,71 @@ void menu_rechercher_trajet() {
       mvprintw(10, 3, "Valider");
       refresh();
       attroff(A_BOLD);
-      int y = recherche_trajet(depart, arrivee);
-      attron(A_REVERSE);
-      mvprintw(y, 3, "Retour");
+
+      int* res = recherche_trajet(depart, arrivee);
+      int y_menu = res[0] + 1;
+      int selected = 0;
+      int nb_options = (res[1] == 0) ? 1 : (res[1] == 1 ? 2 : 3);
 
       while (1) {
-        int ch = getch();
-        if (ch == 10) {
-          attroff(A_REVERSE);
+        // Affichage des options
+        for (int i = 0; i < nb_options; i++) {
+          if (i == selected) attron(A_REVERSE);
+          if (res[1] == 0) {
+            mvprintw(y_menu + i, 3, "Retour");
+          } else if (res[1] == 1) {
+            mvprintw(y_menu + i, 3, i == 0 ? "| Réserver cet itinéraire" : "Retour");
+          } else {
+            if (i == 0) mvprintw(y_menu + i, 3, "| Réserver l'itinéraire 1");
+            else if (i == 1) mvprintw(y_menu + i, 3, "| Réserver l'itinéraire 2");
+            else mvprintw(y_menu + i, 3, "Retour");
+          }
+          if (i == selected) attroff(A_REVERSE);
+        }
+        refresh();
+
+        int input = getch();
+        switch (input) {
+          case KEY_UP:
+            selected = (selected + nb_options - 1) % nb_options;
+            break;
+          case KEY_DOWN:
+            selected = (selected + 1) % nb_options;
+            break;
+          case 10: // Entrée
+            switch (res[1]) {
+              case 0: // Aucun itinéraire
+                return;
+              case 1:
+                if (selected == 0) {
+                  menu_reservation();
+                  return;
+                } else {
+                  return;
+                }
+              case 2:
+                if (selected == 0 || selected == 1) {
+                  menu_reservation();
+                  return;
+                } else {
+                  return;
+                }
+            }
           break;
         }
       }
-      break;
     }
   }
 }
+
 
 void menu_voir_trajets() {
   init_screen();
   clear();
 
-  mvprintw(0, 1, "============================");
+  mvprintw(0, 1, "=============================");
   mvprintw(1, 4, "> Voir tous les Trajets");
-  mvprintw(2, 1, "============================");
+  mvprintw(2, 1, "=============================");
 
   int y;
   y = affiche_trajet_ncurses(1, 0, 4, 4);
@@ -336,11 +483,29 @@ void menu_reserver_trajet() {
 }
 
 void menu_reservation() { 
+  init_screen();
+  clear();
+
+  mvprintw(0, 1, "=============================");
+  mvprintw(1, 4, "> Réservation");
+  mvprintw(2, 1, "=============================");
+  mvprintw(4, 1, "Retour");
+
+  attron(A_REVERSE);
+  mvprintw(4, 1, "Retour");
+  refresh();
+  while (1) {
+    int ch = getch();
+    if (ch == 10) {
+      attroff(A_REVERSE);
+      endwin();
+      break;
+    }
+  }
 }
 
 void menu_modifier_reservation() {
 }
 
 void menu_annuler_reservation() {
-
 }

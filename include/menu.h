@@ -12,7 +12,8 @@ Menu init_menu();
 void init_screen();
 void menu_principal();
 void affiche_menu(Menu);
-int menu_connexion();
+void menu_connexion();
+void menu_creation_compte();
 
 // Menus pour l'Administateur
 void menu_administrateur();
@@ -34,8 +35,8 @@ void menu_controleur();
 void menu_verifier_voyageur();
 void menu_modifier_coord();
 
-// Menus pour l'Utilisateur
-void menu_utilisateur();
+// Menus pour le Voyageur
+void menu_voyageur();
 void menu_rechercher_trajet();
 void menu_voir_trajets();
 void menu_reserver_trajet();

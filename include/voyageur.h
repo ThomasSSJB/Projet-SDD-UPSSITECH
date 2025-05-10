@@ -78,17 +78,15 @@ int confirmer_mdp(char* mdp, char* confirmation);
 void changer_mdp(Voyageur V);
 
 /**
- * @brief Permet de vérifier l'identifiant et le mot de passe d'un voyageur lors de sa connexion
+ * @brief Quand l'utilisateur créer son compte, il doit l'entrer un identifiant valide
  * 
- * @param V Un voyageur
- * @param mdp_connexion Le mdp entré à la connexion
- * @param id_connexion L'identifiant entré à la connexion
- * @return 0 si les infotmations de connections sont bonnes, 1 sinon
+ * @param id L'identifiant à vérifier
+ * @return 0 si valide, 1 sinon
  */
-int verifier_connexion(Voyageur V, char* mdp_connexion, int id_connexion);
+int verifier_id(char* id);
 
 //Fonction qui proposera un trajet (ou plusieurs ?) au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
-int recherche_trajet(char* depart, char* arrivee);
+int* recherche_trajet(char* depart, char* arrivee);
 Trajet selectionner_trajet(Trajet, Voyageur);
 
 //Fonctions qui permettront de réserver/modifier un trajet (éventuellement l'annuler aussi ou alors une fonction dédiée à l'annulation ?)

@@ -67,20 +67,18 @@ char* nouveau_mdp(Voyageur V) {
   return nouveau;
 }
 
-
 int verifier_mdp(char* mdp){
   char caracteres_speciaux[] = ",;&*+" ;
   char chiffres[] = "0123456789" ;
   char majuscules[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ;
   char minuscules[] = "abcdefghijklmnopqrstuvwxyz" ;
   if (strlen(mdp) < 8 || strpbrk(mdp, caracteres_speciaux) == NULL || strpbrk(mdp, chiffres) == NULL || strpbrk(mdp, majuscules) == NULL || strpbrk(mdp, minuscules) == NULL){
-    mvprintw(12, 3, "---------------------");
-    mvprintw(14, 3, "Votre mot de passe doit contenir au moins : \n");
-    mvprintw(15, 3, "  - 8 caractères\n");
-    mvprintw(16, 3, "  - Un chiffre [0-9]\n");
-    mvprintw(17, 3, "  - Une majuscule [A-Z]\n");
-    mvprintw(18, 3, "  - Une minuscule [a-z]\n");
-    mvprintw(19, 3, "  - 1 caractère spécial [, ; & * +]\n");
+    mvprintw(15, 3, "Votre mot de passe doit contenir au moins : \n");
+    mvprintw(16, 3, "  - 8 caractères\n");
+    mvprintw(17, 3, "  - Un chiffre [0-9]\n");
+    mvprintw(18, 3, "  - Une majuscule [A-Z]\n");
+    mvprintw(19, 3, "  - Une minuscule [a-z]\n");
+    mvprintw(20, 3, "  - 1 caractère spécial [, ; & * +]\n");
     return 1;
   } else {
     return 0;
@@ -117,22 +115,38 @@ void changer_mdp(Voyageur V) {
   }
 }
 
-int verifier_connexion(Voyageur V, char* mdp_connexion, int id_connexion){
-  if (V->id == id_connexion && confirmer_mdp(V->mdp, mdp_connexion) == 0){
-    return 0;
-  } else {
+int verifier_id(char* id) {
+  int res = 0;
+  // Vérifie que la longueur est exactement 3
+  if (strlen(id) != 3) res++;
+
+  // Vérifie que chaque caractère est un chiffre
+  for (int i = 0; i < 3; i++) {
+    if (id[i] < '0' || id[i] > '9') res++;
+  }
+
+  if (res != 0) {
+    mvprintw(15, 3, "L'identifiant doit comporter exactement 3 chiffres :");
+    mvprintw(16, 3, "  - si l'id est entre 000 et 099 : administrateur");
+    mvprintw(17, 3, "  - si l'id est entre 100 et 199 : contrôleur");
+    mvprintw(18, 3, "  - si l'id est entre 200 et 999 : voyageur");
     return 1;
+  } else {
+    return 0;
   }
 }
 
-//Fonction qui proposera un trajet (ou plusieurs ?) au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
 
-int recherche_trajet(char* depart, char* arrivee) {
+//Fonction qui propose un ou plusieurs trajets au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
+
+int* recherche_trajet(char* depart, char* arrivee) {
   FILE* f = fopen("trajets.txt", "r");
   if (!f) {
     perror("Erreur d'ouverture du fichier trajets.txt");
     return 0;
   }
+
+  int* res = malloc(2*sizeof(int));
 
   typedef struct {
     int id;
@@ -203,6 +217,9 @@ int recherche_trajet(char* depart, char* arrivee) {
         else
           mvprintw(y1++, x1, "   | %s (+%.1fh)", t->gares[j], delta);
       }
+      res[0] = y1 + 1;
+      res[1] = 1;
+      return res;
     }
   }
 
@@ -249,8 +266,10 @@ int recherche_trajet(char* depart, char* arrivee) {
   }
 
   if (nbSolutions == 0) {
-    mvprintw(3, 3, "Aucun itinéraire trouvé de %s à %s.", depart, arrivee);
-    return 0;
+    mvprintw(y1++, 3, "Aucun itinéraire trouvé de %s à %s.", depart, arrivee);
+    res[0] = y1 + 1;
+    res[1] = nbSolutions;
+    return res;
   }
 
   for (int i = 0; i < nbSolutions; i++) {
@@ -295,7 +314,15 @@ int recherche_trajet(char* depart, char* arrivee) {
     }
   }
 
-  return (y1 > y2 ? y1 : y2);
+  if (y1 > y2) {
+    res[0] = y1 + 1;
+    res[1] = nbSolutions;
+    return res;
+  } else {
+    res[0] = y2 + 1;
+    res[1] = nbSolutions;
+    return res;
+  }
 }
 
 
