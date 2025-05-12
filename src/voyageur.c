@@ -12,14 +12,14 @@
 #define MAX_LINE 256
 
 struct Voyageur{
-  int id;
+  char* id;
   char* mdp;
   char gare_depart[50];
   char gare_arrivee[50];
 };
 
 
-Voyageur init_Voyageur(int id){
+Voyageur init_Voyageur(char* id){
   Voyageur V = malloc(sizeof(struct Voyageur));
   V->id = id;
   V->mdp = nouveau_mdp(V);
@@ -30,7 +30,7 @@ char* getMdp(Voyageur V){
   return V->mdp;
 }
 
-int getId(Voyageur V){
+char* getId(Voyageur V){
   return V->id;
 }
 
@@ -90,37 +90,14 @@ int confirmer_mdp(char* mdp, char* confirmation){
   return strcmp(confirmation, mdp);
 }
 
-void changer_mdp(Voyageur V) {
-  char reponse[20];
-  int choix;
-
-  while (1) {
-    printf("Entrez votre mot de passe actuel : \n");
-    scanf(" %s", reponse);
-
-    if (strcmp(reponse, V->mdp) == 0) {
-      char* nouveau = nouveau_mdp(V);
-      V->mdp = nouveau;
-      printf("Votre mot de passe a bien été modifié\n");
-      break;
-    } else {
-      printf("Mot de passe incorrect ! Tapez 1 pour réessayer, 0 si vous avez oublié votre mot de passe : \n");
-      scanf("%d", &choix);
-      if (choix == 0) {
-        char* nouveau = nouveau_mdp(V);
-        V->mdp = nouveau;
-        break;
-      }
-    }
-  }
+void changer_mdp(char* id, char* new_mdp) {
+  
 }
 
 int verifier_id(char* id) {
   int res = 0;
-  // Vérifie que la longueur est exactement 3
   if (strlen(id) != 3) res++;
 
-  // Vérifie que chaque caractère est un chiffre
   for (int i = 0; i < 3; i++) {
     if (id[i] < '0' || id[i] > '9') res++;
   }

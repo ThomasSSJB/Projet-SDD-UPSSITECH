@@ -178,7 +178,7 @@ void exporter_trajet_json(Trajet T) {
   for (int i = 0; i < T->nb_voyageurs; i++) {
     Voyageur V = T->liste_voyageur[i];
     fprintf(f, "    {\n");
-    fprintf(f, "      \"id\": %d,\n", getId(V));
+    fprintf(f, "      \"id\": %s,\n", getId(V));
     fprintf(f, "      \"gare_depart\": \"%s\",\n", getGareDepart(V));
     fprintf(f, "      \"gare_arrivee\": \"%s\"\n", getGareArrivee(V));
     fprintf(f, "    }%s\n", (i < T->nb_voyageurs - 1) ? "," : "");

@@ -255,13 +255,14 @@ void menu_administrateur() {
   init_screen();
 
   OptionMenu Opt1 = init_optionmenu("| Gestion des Trajets", menu_gestion_trajets);
-  OptionMenu Opt2 = init_optionmenu("| Administration", menu_changer_mdp);
-  OptionMenu Opt3 = init_optionmenu("| Exportation", menu_exportation);
-  OptionMenu Opt4 = init_optionmenu("Se déconnecter", NULL);
+  OptionMenu Opt2 = init_optionmenu("| Modifier un mot de passe", menu_modifier_mdp);
+  OptionMenu Opt3 = init_optionmenu("| Supprimer un Utilisateur", menu_supprimer_user);
+  OptionMenu Opt4 = init_optionmenu("| Exportation", menu_exportation);
+  OptionMenu Opt5 = init_optionmenu("Se déconnecter", NULL);
 
-  OptionMenu liste_options[4] = {Opt1, Opt2, Opt3, Opt4};
+  OptionMenu liste_options[5] = {Opt1, Opt2, Opt3, Opt4, Opt5};
 
-  Menu M = init_menu("Menu Administrateur", 4, liste_options);
+  Menu M = init_menu("Menu Administrateur", 5, liste_options);
   affiche_menu(M);
 }
 
@@ -281,7 +282,99 @@ void menu_gestion_trajets() {
   affiche_menu(M);
 }
 
-void menu_changer_mdp() {
+void menu_modifier_mdp() {
+  init_screen();
+  clear();
+
+  char id[4] = "";
+  char mdp[16] = "";
+
+  mvprintw(0, 1, "=============================");
+  mvprintw(1, 4, "> Modifier un mot de passe");
+  mvprintw(2, 1, "=============================");
+  mvprintw(4, 3, "| Entrez un identifiant");
+  mvprintw(7, 3, "| Entrez le nouveau mot de passe");
+  mvprintw(10, 3, "Valider");
+
+  echo();
+  move(5, 3);
+  getnstr(id, 16);
+  move(8, 3);
+  getnstr(mdp, 16);
+  noecho();
+
+  attron(A_REVERSE);
+  mvprintw(10, 3, "Valider");
+  attroff(A_REVERSE);
+
+  while (1) {
+    int ch = getch();
+    if (ch == 10) {
+      attron(A_BOLD);
+      mvprintw(10, 3, "Valider");
+      attroff(A_BOLD);
+      if (modifier_mdp(id, mdp)) {
+        attron(A_REVERSE);
+        mvprintw(22, 3, "Retour");
+      } else {
+        attron(A_REVERSE);
+        mvprintw(14, 3, "Retour");
+      }
+      while (1) {
+        ch = getch();
+        if (ch == 10) {
+          attroff(A_REVERSE);
+          break;
+        }
+      }
+      break;
+    }
+  }
+}
+
+void menu_supprimer_user() {
+  init_screen();
+  clear();
+
+  char id[4] = "";
+
+  mvprintw(0, 1, "=============================");
+  mvprintw(1, 4, "> Supprimer un Utilisateur");
+  mvprintw(2, 1, "=============================");
+  mvprintw(4, 3, "| Entrez un identifiant");
+  mvprintw(7, 3, "Valider");
+
+  echo();
+  move(5, 3);
+  getnstr(id, 16);
+  noecho();
+
+  attron(A_REVERSE);
+  mvprintw(7, 3, "Valider");
+  attroff(A_REVERSE);
+
+  while (1) {
+    int ch = getch();
+    if (ch == 10) {
+      attron(A_BOLD);
+      mvprintw(7, 3, "Valider");
+      attroff(A_BOLD);
+      int res = supprimer_utilisateur(id);
+      attron(A_REVERSE);
+      if (res == 0) {
+        mvprintw(11, 3, "Retour");
+      } else {
+        mvprintw(14, 3, "Retour");
+      }
+      while (1) {
+        ch = getch();
+        if (ch == 10) {
+          attroff(A_REVERSE);
+          break;
+        }
+      } break;
+    }
+  }
 }
 
 void menu_exportation() {
@@ -324,7 +417,7 @@ void menu_controleur(){
   init_screen();
 
   OptionMenu Opt1 = init_optionmenu("| Vérifier un Voyageur", menu_verifier_voyageur);
-  OptionMenu Opt2 = init_optionmenu("| Modifier des coordonnées", menu_changer_mdp);
+  OptionMenu Opt2 = init_optionmenu("| Modifier son mot de passe", menu_modifier_mdp);
   OptionMenu Opt3 = init_optionmenu("Se déconnecter", NULL);
 
   OptionMenu liste_options[3] = {Opt1, Opt2, Opt3};
@@ -333,7 +426,7 @@ void menu_controleur(){
   affiche_menu(M);
 }
 
-void menu_verifier_voyageur(){
+void menu_verifier_voyageur() {
 }
 
 void menu_modifier_coord() {

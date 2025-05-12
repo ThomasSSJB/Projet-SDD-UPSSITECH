@@ -11,7 +11,7 @@ typedef struct Voyageur * Voyageur;
  * @param id Identifiant du voyageur
  * @return Voyageur 
  */
-Voyageur init_Voyageur(int id);
+Voyageur init_Voyageur(char* id);
 
 /**
  * @brief Récupère le mdp d'un voyageur
@@ -25,9 +25,9 @@ char* getMdp(Voyageur V);
  * @brief Get the Id object
  * 
  * @param V Un voyageur
- * @return int 
+ * @return char* 
  */
-int getId(Voyageur V);
+char* getId(Voyageur V);
 
 /**
  * @brief Get the Gare Depart object
@@ -73,9 +73,10 @@ int confirmer_mdp(char* mdp, char* confirmation);
 /**
  * @brief Permet à un voyageur de changer de mdp
  * 
- * @param V 
+ * @param id 
+ * @param new_mdp 
  */
-void changer_mdp(Voyageur V);
+void changer_mdp(char* id, char* new_mdp);
 
 /**
  * @brief Quand l'utilisateur créer son compte, il doit l'entrer un identifiant valide

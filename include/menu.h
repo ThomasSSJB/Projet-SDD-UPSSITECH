@@ -18,7 +18,8 @@ void menu_creation_compte();
 // Menus pour l'Administateur
 void menu_administrateur();
 void menu_gestion_trajets();
-void menu_changer_mdp();
+void menu_modifier_mdp();
+void menu_supprimer_user();
 void menu_exportation();
 
 void menu_ajouter_trajet();
