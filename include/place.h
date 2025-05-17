@@ -11,7 +11,7 @@ typedef struct Place * Place;
  * 
  * @param T Trajet associé à la place créée 
  * @param V Voyageur associé à la place créée
- * @param etat Indique si la plca est disponible (0) ou pas (1)
+ * @param etat Indique si la place est disponible (0) ou pas (1)
  * @return Place 
  */
 Place init_place(Trajet T, Voyageur V, int etat);

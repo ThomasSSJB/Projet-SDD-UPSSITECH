@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<minder version="1.14.0" parent-etag="671782494" etag="3853339707">
+<minder version="1.14.0" parent-etag="4124332302" etag="2537595692">
   <theme name="default" label="Light" index="-1"/>
   <styles>
     <style level="0" isset="false" branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="10" nodepadding="10" nodefont="Sans 11" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
@@ -182,6 +182,13 @@
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
       <nodename posx="514.99218749999943" posy="416.07278538767554" maxwidth="200">
         <text data="V&#xE9;rifier Voyageur"/>
+      </nodename>
+      <nodenote></nodenote>
+    </node>
+    <node id="26" posx="179.93775161377511" posy="443.21934489309695" width="142" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+      <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
+      <nodename posx="193.93775161377511" posy="457.21934489309695" maxwidth="200">
+        <text data="Supprimer User"/>
       </nodename>
       <nodenote></nodenote>
     </node>

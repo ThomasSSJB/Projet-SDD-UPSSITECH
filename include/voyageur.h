@@ -11,7 +11,7 @@ typedef struct Voyageur * Voyageur;
  * @param id Identifiant du voyageur
  * @return Voyageur 
  */
-Voyageur init_Voyageur(char* id);
+Voyageur init_voyageur(char* id, char* mdp);
 
 /**
  * @brief Récupère le mdp d'un voyageur
@@ -73,10 +73,10 @@ int confirmer_mdp(char* mdp, char* confirmation);
 /**
  * @brief Permet à un voyageur de changer de mdp
  * 
- * @param id 
- * @param new_mdp 
+ * @param V  Le voyageur
+ * @param new_mdp Le nouveau mdp
  */
-void changer_mdp(char* id, char* new_mdp);
+void changer_mdp(Voyageur V, char* new_mdp);
 
 /**
  * @brief Quand l'utilisateur créer son compte, il doit l'entrer un identifiant valide
@@ -86,9 +86,14 @@ void changer_mdp(char* id, char* new_mdp);
  */
 int verifier_id(char* id);
 
-//Fonction qui proposera un trajet (ou plusieurs ?) au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
+/**
+ * @brief Permet d'afficher un ou deux itinéraires (1 itinéraire = 1 ou 2 trajets) à partir d'une gare de départ, et d'une gare d'arrivée
+ * 
+ * @param depart La gare de depart
+ * @param arrivee La gare d'arrivée
+ * @return {y_max, nbSolutions} : y_max est la coordonnée y maximale sur laquelle quelque chose a été écrit, et nbSolution est le nombre d'itinéraires trouvés
+ */
 int* recherche_trajet(char* depart, char* arrivee);
-Trajet selectionner_trajet(Trajet, Voyageur);
 
 //Fonctions qui permettront de réserver/modifier un trajet (éventuellement l'annuler aussi ou alors une fonction dédiée à l'annulation ?)
 Trajet modification_trajet(Trajet, Voyageur);

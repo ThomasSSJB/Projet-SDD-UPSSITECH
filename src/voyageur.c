@@ -3,9 +3,11 @@
 #include <string.h>
 #include <math.h>
 #include <ncurses.h>
+#include <cjson/cJSON.h>
 #include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
+#include "../include/gestion.h"
 #include "../include/pile.h"
 #include "../include/node.h"
 
@@ -14,15 +16,15 @@
 struct Voyageur{
   char* id;
   char* mdp;
-  char gare_depart[50];
-  char gare_arrivee[50];
+  char gare_depart[50];  // suceptible d'évoluer
+  char gare_arrivee[50]; // suceptible d'évoluer
 };
 
 
-Voyageur init_Voyageur(char* id){
+Voyageur init_voyageur(char* id, char* mdp){
   Voyageur V = malloc(sizeof(struct Voyageur));
   V->id = id;
-  V->mdp = nouveau_mdp(V);
+  V->mdp = mdp;
   return V;
 }
 
@@ -90,8 +92,8 @@ int confirmer_mdp(char* mdp, char* confirmation){
   return strcmp(confirmation, mdp);
 }
 
-void changer_mdp(char* id, char* new_mdp) {
-  
+void changer_mdp(Voyageur V, char* new_mdp) {
+  V->mdp = new_mdp;
 }
 
 int verifier_id(char* id) {
@@ -117,17 +119,25 @@ int verifier_id(char* id) {
 //Fonction qui propose un ou plusieurs trajets au voyageur en entrant la gare de départ et la gare d'arrivée souhaitée
 
 int* recherche_trajet(char* depart, char* arrivee) {
-  FILE* f = fopen("trajets.txt", "r");
-  if (!f) {
-    perror("Erreur d'ouverture du fichier trajets.txt");
-    return 0;
+  int* res = malloc(2 * sizeof(int));
+  res[0] = 0;
+  res[1] = 0;
+
+  cJSON* racine = charger_json("JSON/trajets.json");
+  if (!racine) {
+    mvprintw(12, 3, "Erreur d'ouverture du fichier trajets.json");
+    return res;
   }
 
-  int* res = malloc(2*sizeof(int));
+  cJSON* trajets_json = cJSON_GetObjectItem(racine, "trajets");
+  if (!cJSON_IsArray(trajets_json)) {
+    mvprintw(12, 3, "Format du fichier JSON invalide.");
+    cJSON_Delete(racine);
+    return res;
+  }
 
   typedef struct {
     int id;
-    char nom[100];
     char gares[20][100];
     float temps[20];
     int nb_gares;
@@ -135,31 +145,36 @@ int* recherche_trajet(char* depart, char* arrivee) {
 
   BufferTrajet trajets[10];
   int nb_trajets = 0;
-  char line[MAX_LINE];
-  fgets(line, MAX_LINE, f); // skip header
 
-  int id;
-  char nom_trajet[100], gare[100];
-  float temps;
+  cJSON* trajet_json;
+  cJSON_ArrayForEach(trajet_json, trajets_json) {
+    if (nb_trajets >= 10) break;
 
-  while (fgets(line, MAX_LINE, f)) {
-    if (sscanf(line, "%d;%99[^;];%99[^;];%f", &id, nom_trajet, gare, &temps) != 4)
-      continue;
+    BufferTrajet* t = &trajets[nb_trajets];
+    cJSON* id = cJSON_GetObjectItem(trajet_json, "id");
+    cJSON* gares = cJSON_GetObjectItem(trajet_json, "gares");
 
-    if (nb_trajets == 0 || trajets[nb_trajets - 1].id != id) {
-      trajets[nb_trajets].id = id;
-      strcpy(trajets[nb_trajets].nom, nom_trajet);
-      trajets[nb_trajets].nb_gares = 0;
-      nb_trajets++;
+    if (!cJSON_IsNumber(id) || !cJSON_IsArray(gares)) continue;
+
+    t->id = id->valueint;
+    t->nb_gares = 0;
+
+    cJSON* gare;
+    cJSON_ArrayForEach(gare, gares) {
+      cJSON* nom = cJSON_GetObjectItem(gare, "nom");
+      cJSON* temps = cJSON_GetObjectItem(gare, "temps");
+
+      if (!cJSON_IsString(nom) || !cJSON_IsNumber(temps)) continue;
+
+      strcpy(t->gares[t->nb_gares], nom->valuestring);
+      t->temps[t->nb_gares] = temps->valuedouble;
+      t->nb_gares++;
     }
 
-    BufferTrajet* t = &trajets[nb_trajets - 1];
-    strcpy(t->gares[t->nb_gares], gare);
-    t->temps[t->nb_gares] = temps;
-    t->nb_gares++;
+    nb_trajets++;
   }
 
-  fclose(f);
+  cJSON_Delete(racine);
 
   int x1 = 3, y1 = 12;
   int x2 = 40, y2 = 12;
@@ -176,7 +191,7 @@ int* recherche_trajet(char* depart, char* arrivee) {
 
     if (idx_dep != -1 && idx_arr != -1) {
       mvprintw(y1++, x1, "Itinéraire direct");
-      mvhline(y1++, x1, ACS_HLINE, 30);
+      mvprintw(y1++, x1, "-----------------------------");
       attron(A_BOLD);
       mvprintw(y1++, x1, "%s -> %s", depart, arrivee);
       attroff(A_BOLD);
@@ -255,7 +270,7 @@ int* recherche_trajet(char* depart, char* arrivee) {
     int y = (i == 0) ? y1 : y2;
 
     mvprintw(y++, x, "Itinéraire %d", i + 1);
-    mvhline(y++, x, ACS_HLINE, 30);
+    mvprintw(y++, x, "-----------------------------");
     attron(A_BOLD);
     mvprintw(y++, x, "%s -> %s -> %s", it.t1->gares[it.idx_dep], it.t2->gares[it.idx_inter2], it.t2->gares[it.idx_arr]);
     attroff(A_BOLD);
@@ -303,8 +318,6 @@ int* recherche_trajet(char* depart, char* arrivee) {
 }
 
 
-
-Trajet selectionner_trajet(Trajet T, Voyageur V);
 
 //Fonctions qui permettront de réserver/modifier un trajet (éventuellement l'annuler aussi ou alors une fonction dédiée à l'annulation ?)
 Trajet reservation_trajet(Trajet T, Voyageur V);

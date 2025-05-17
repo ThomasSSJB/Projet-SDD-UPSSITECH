@@ -6,6 +6,7 @@
 #include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
+#include "../include/gestion.h"
 #include "../include/pile.h"
 #include "../include/node.h"
 
@@ -16,8 +17,8 @@ struct Gare{
 
 struct Trajet{
   Pile gares;
-  int places_dispo;
   int id;
+  int places_dispo;
   int nb_voyageurs;
   Voyageur liste_voyageur[10];
 };
@@ -26,7 +27,7 @@ struct Trajet{
 
 Gare init_gare(char* nom, float temps){
   Gare G = malloc(sizeof(struct Gare));
-  G->nom = nom;
+  G->nom = strdup(nom);
   G->temps = temps;
   return G;
 }
@@ -44,21 +45,42 @@ int get_trajet_id(Trajet T){
   return T->id;
 }
 
-void ajouter_gare(Trajet T, Gare G) {
-  empiler(T->gares, G);
-}
-
-void supprimer_gare(Trajet T, Gare G) {
+void ajouter_gare(int id_trajet, char* gare, char* new_gare, float duree) {
+  Trajet T = charger_trajet(id_trajet, 0);
   Pile P = init_pile();
-  while (! est_vide(T->gares)) {
-    Gare G_temp = depiler(T->gares);
-    if (G_temp != G) {
-      empiler(P, G_temp);
+  while (!est_vide(T->gares)) {
+    Gare G = depiler(T->gares);
+    if (strcmp(G->nom, gare) == 0) {
+      Gare new_G = init_gare(new_gare, duree);
+      empiler(P, new_G);
     }
+    empiler(P, G);
   }
-  while (! est_vide(P)){
+  while (!est_vide(P)) {
     empiler(T->gares, depiler(P));
   }
+  supprimer_trajet(id_trajet);
+  ajouter_trajet(T);
+}
+
+
+void supprimer_gare(int id_trajet, char* gare) {
+  Trajet T = charger_trajet(id_trajet, 0);
+  Pile P = init_pile();
+  while (!est_vide(T->gares)) {
+    Gare G = depiler(T->gares);
+    printf("G->nom = %s, gare = %s   ->   ", G->nom, gare);
+    if (strcmp(G->nom, gare) == 0) {
+      continue;
+    } else {
+      empiler(P, G);
+    }
+  }
+  while (!est_vide(P)) {
+    empiler(T->gares, depiler(P));
+  }
+  supprimer_trajet(id_trajet);
+  ajouter_trajet(T);
 }
 
 void affiche_gare(Gare G){
@@ -66,51 +88,69 @@ void affiche_gare(Gare G){
 }
 
 Trajet charger_trajet(int id_recherche, int est_inverse) {
-  FILE* f = fopen("trajets.txt", "r");
-  if (!f) {
-      perror("Erreur d'ouverture du fichier trajets.txt");
-      return NULL;
+  cJSON* racine = charger_json("JSON/trajets.json");
+  if (!racine) {
+    printf("Erreur lors du chargement du fichier JSON.\n");
+    return NULL;
   }
 
-  char ligne[256], nom_trajet[50], nom_gare[50];
-  int id;
-  float temps, max_temps = 0;
+  cJSON* trajets = cJSON_GetObjectItem(racine, "trajets");
+  if (!trajets || !cJSON_IsArray(trajets)) {
+    cJSON_Delete(racine);
+    printf("Erreur : l'objet 'trajets' est manquant ou invalide.\n");
+    return NULL;
+  }
 
   Pile pile = init_pile();
+  float max_temps = 0.0;
+  cJSON* trajet = NULL;
 
-  while (fgets(ligne, sizeof(ligne), f)) {
-    if (ligne[0] == '#' || ligne[0] == '\n') continue;
+  // Trouver le trajet avec l'ID recherché
+  cJSON_ArrayForEach(trajet, trajets) {
+    cJSON* id_obj = cJSON_GetObjectItem(trajet, "id");
+    if (cJSON_IsNumber(id_obj) && id_obj->valueint == id_recherche) {
+      cJSON* gares = cJSON_GetObjectItem(trajet, "gares");
+      if (gares && cJSON_IsArray(gares)) {
+        cJSON* gare = NULL;
 
-    if (sscanf(ligne, "%d;%49[^;];%49[^;];%f", &id, nom_trajet, nom_gare, &temps) == 4 && id == id_recherche) {
-        if (temps > max_temps) max_temps = temps;
-          char* nom_dyn = malloc(strlen(nom_gare) + 1);
-          strcpy(nom_dyn, nom_gare);
-          Gare g = init_gare(nom_dyn, temps);
-          empiler(pile, g);
+        cJSON_ArrayForEach(gare, gares) {
+          cJSON* nom = cJSON_GetObjectItem(gare, "nom");
+          cJSON* temps = cJSON_GetObjectItem(gare, "temps");
+
+          if (cJSON_IsString(nom) && cJSON_IsNumber(temps)) {
+            if (temps->valuedouble > max_temps)
+              max_temps = temps->valuedouble;
+
+            Gare g = init_gare(nom->valuestring, temps->valuedouble);
+            empiler(pile, g);
+          }
+        }
       }
+      break; // On sort après avoir trouvé le bon trajet
+    }
   }
-  fclose(f);
+
+  cJSON_Delete(racine);
 
   if (est_vide(pile)) {
-      printf("Aucun trajet trouvé avec l’ID %d.\n", id_recherche);
+      printf("Aucun trajet trouvé avec l'ID %d.\n", id_recherche);
       return NULL;
   }
 
-  Trajet trajet = init_trajet(pile, id_recherche);
+  Trajet trajet_final = init_trajet(pile, id_recherche);
 
   if (est_inverse) {
-    Pile pile_inverse = init_pile();
-    while (!est_vide(pile)) {
-        Gare g = depiler(pile);
-        g->temps = max_temps - g->temps;
-        empiler(pile_inverse, g);
+      Pile pile_inverse = init_pile();
+      while (!est_vide(pile)) {
+          Gare g = depiler(pile);
+          g->temps = max_temps - g->temps;
+          empiler(pile_inverse, g);
       }
-      trajet->gares = pile_inverse;
+      trajet_final->gares = pile_inverse;
   }
-
-  return trajet;
+  
+  return trajet_final;
 }
-
 
 void affiche_trajet(int id, int inverse) {
   Trajet t = charger_trajet(id, inverse);
@@ -189,4 +229,140 @@ void exporter_trajet_json(Trajet T) {
 
   fclose(f);
   printf("Export JSON terminé : %s\n", nom_fichier);
+}
+
+int verifier_trajet(int id) {
+  cJSON* racine = charger_json("JSON/trajets.json");
+  if (!racine) return 0; // Impossible de charger le fichier
+
+  cJSON* trajets = cJSON_GetObjectItem(racine, "trajets");
+  if (!trajets || !cJSON_IsArray(trajets)) {
+    cJSON_Delete(racine);
+    return 0;
+  }
+
+  for (int i = 0; i < cJSON_GetArraySize(trajets); ++i) {
+    cJSON* trajet = cJSON_GetArrayItem(trajets, i);
+    cJSON* trajet_id = cJSON_GetObjectItem(trajet, "id");
+    if (trajet_id && cJSON_IsNumber(trajet_id)) {
+      if (trajet_id->valueint == id) {
+        cJSON_Delete(racine);
+        return 1; // ID déjà présent
+      }
+    }
+  }
+
+  cJSON_Delete(racine);
+  return 0; // ID non trouvé
+}
+
+int verifier_gare(int id_trajet, char* gare) {
+    if (!verifier_trajet(id_trajet)) {
+      // Trajet non présent
+      return 0;
+    }
+
+    cJSON* racine = charger_json("JSON/trajets.json");
+    if (!racine) return 0;
+
+    cJSON* trajets = cJSON_GetObjectItem(racine, "trajets");
+
+    cJSON* trajet = NULL;
+    cJSON_ArrayForEach(trajet, trajets) {
+      cJSON* id_obj = cJSON_GetObjectItem(trajet, "id");
+      if (cJSON_IsNumber(id_obj) && id_obj->valueint == id_trajet) {
+        cJSON* gares = cJSON_GetObjectItem(trajet, "gares");
+        if (!gares || !cJSON_IsArray(gares)) {
+          cJSON_Delete(racine);
+          return 0;
+        }
+        cJSON* gare_item = NULL;
+        cJSON_ArrayForEach(gare_item, gares) {
+          cJSON* nom = cJSON_GetObjectItem(gare_item, "nom");
+          if (cJSON_IsString(nom) && strcmp(nom->valuestring, gare) == 0) {
+            cJSON_Delete(racine);
+            return 1; // Gare trouvée
+          }
+        }
+        break; // On a trouvé le trajet, pas besoin de continuer
+      }
+    }
+    cJSON_Delete(racine);
+    return 0; // Gare non trouvée
+}
+
+
+
+int verifier_duree(float duree) {
+  return duree == 0.0;
+}
+
+int ajouter_trajet(Trajet trajet) {
+    cJSON* racine = charger_json("JSON/trajets.json");
+    if (!racine) return 0;
+
+    cJSON* trajets = cJSON_GetObjectItem(racine, "trajets");
+    if (!trajets || !cJSON_IsArray(trajets)) {
+        cJSON_Delete(racine);
+        return 0;
+    }
+
+    cJSON* nouveau_trajet = cJSON_CreateObject();
+    cJSON_AddNumberToObject(nouveau_trajet, "id", trajet->id);
+
+    cJSON* liste_gares = cJSON_CreateArray();
+
+    // On utilise une pile temporaire pour inverser sans détruire
+    Pile pile_temp = init_pile();
+    Node n = get_pile_top(trajet->gares);
+    while (n != NULL) {
+        empiler(pile_temp, get_node_gare(n));
+        n = get_next_node(n);
+    }
+
+    // On reparcourt dans l’ordre d’origine
+    Node courant = get_pile_top(pile_temp);
+    while (courant != NULL) {
+        Gare G = get_node_gare(courant);
+        cJSON* gare = cJSON_CreateObject();
+        cJSON_AddStringToObject(gare, "nom", G->nom);
+        cJSON_AddNumberToObject(gare, "temps", G->temps);
+        cJSON_AddItemToArray(liste_gares, gare);
+        courant = get_next_node(courant);
+    }
+
+    cJSON_AddItemToObject(nouveau_trajet, "gares", liste_gares);
+    cJSON_AddItemToArray(trajets, nouveau_trajet);
+
+    int res = sauvegarder_json("JSON/trajets.json", racine);
+    cJSON_Delete(racine);
+    return res;
+}
+
+
+int supprimer_trajet(int id_trajet) {
+    cJSON* racine = charger_json("JSON/trajets.json");
+    if (!racine) return 0;
+
+    cJSON* trajets = cJSON_GetObjectItem(racine, "trajets");
+    if (!trajets || !cJSON_IsArray(trajets)) {
+        cJSON_Delete(racine);
+        return 0;
+    }
+
+    int index = 0;
+    cJSON* trajet = NULL;
+    cJSON_ArrayForEach(trajet, trajets) {
+        cJSON* id = cJSON_GetObjectItem(trajet, "id");
+        if (id && id->valueint == id_trajet) {
+            cJSON_DeleteItemFromArray(trajets, index);
+            int res = sauvegarder_json("JSON/trajets.json", racine);
+            cJSON_Delete(racine);
+            return res;
+        }
+        index++;
+    }
+
+    cJSON_Delete(racine);
+    return 0;
 }

@@ -1,45 +1,90 @@
 {
-  "trajets": [
-    {
-      "id": 1,
-      "gares": [
-        { "nom": "Paris", "temps": 0 },
-        { "nom": "Orléans", "temps": 1 },
-        { "nom": "Limoges", "temps": 3.5 },
-        { "nom": "Brive", "temps": 4.5 },
-        { "nom": "Montauban", "temps": 5.5 },
-        { "nom": "Toulouse", "temps": 6 }
-      ]
-    },
-    {
-      "id": 2,
-      "gares": [
-        { "nom": "Bordeaux", "temps": 0 },
-        { "nom": "Agen", "temps": 1 },
-        { "nom": "Montauban", "temps": 2 },
-        { "nom": "Toulouse", "temps": 2.5 },
-        { "nom": "Narbonne", "temps": 4 },
-        { "nom": "Montpellier", "temps": 5 },
-        { "nom": "Marseille", "temps": 6 },
-        { "nom": "Nice", "temps": 8.5 }
-      ]
-    },
-    {
-      "id": 3,
-      "gares": [
-        { "nom": "Paris", "temps": 0 },
-        { "nom": "Lyon", "temps": 1.5 },
-        { "nom": "Marseille", "temps": 3 }
-      ]
-    },
-    {
-      "id": 4,
-      "gares": [
-        { "nom": "Paris", "temps": 0 },
-        { "nom": "Tours", "temps": 1 },
-        { "nom": "Bordeaux", "temps": 2 },
-        { "nom": "Biarritz", "temps": 3.5 }
-      ]
-    }
-  ]
+	"trajets":	[{
+			"id":	1,
+			"gares":	[{
+					"nom":	"Paris",
+					"temps":	0
+				}, {
+					"nom":	"Orléans",
+					"temps":	1
+				}, {
+					"nom":	"Limoges",
+					"temps":	3.5
+				}, {
+					"nom":	"Brive",
+					"temps":	4.5
+				}, {
+					"nom":	"Montauban",
+					"temps":	5.5
+				}, {
+					"nom":	"Toulouse",
+					"temps":	6
+				}]
+		}, {
+			"id":	2,
+			"gares":	[{
+					"nom":	"Bordeaux",
+					"temps":	0
+				}, {
+					"nom":	"Agen",
+					"temps":	1
+				}, {
+					"nom":	"Montauban",
+					"temps":	2
+				}, {
+					"nom":	"Toulouse",
+					"temps":	2.5
+				}, {
+					"nom":	"Narbonne",
+					"temps":	4
+				}, {
+					"nom":	"Montpellier",
+					"temps":	5
+				}, {
+					"nom":	"Marseille",
+					"temps":	6
+				}, {
+					"nom":	"Nice",
+					"temps":	8.5
+				}]
+		}, {
+			"id":	3,
+			"gares":	[{
+					"nom":	"Paris",
+					"temps":	0
+				}, {
+					"nom":	"Lyon",
+					"temps":	1.5
+				}, {
+					"nom":	"Marseille",
+					"temps":	3
+				}]
+		}, {
+			"id":	4,
+			"gares":	[{
+					"nom":	"Paris",
+					"temps":	0
+				}, {
+					"nom":	"Tours",
+					"temps":	1
+				}, {
+					"nom":	"Bordeaux",
+					"temps":	2
+				}, {
+					"nom":	"Biarritz",
+					"temps":	3.5
+				}]
+		}, {
+			"id":	5,
+			"gares":	[{
+					"nom":	"Tarbes",
+					"temps":	0
+				}, {
+					"nom":	"Lannemezan",
+					"temps":	0.5
+				}, {
+					"nom":	"Toulouse",
+					"temps":	2
+				}]
+		}]
 }

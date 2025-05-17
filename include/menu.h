@@ -1,6 +1,8 @@
 #ifndef __MENU_H__
 #define __MENU_H__
 
+#include "../include/voyageur.h"
+
 typedef struct OptionMenu * OptionMenu;
 typedef struct Menu * Menu;
 
@@ -25,8 +27,8 @@ void menu_exportation();
 void menu_ajouter_trajet();
 void menu_modifier_trajet();
 void menu_supprimer_trajet();
-void menu_ajouter_gare();
-void menu_supprimer_gare();
+void menu_ajouter_gare(int, int);
+void menu_supprimer_gare(int, int);
 
 void menu_exporter_trajet();
 void menu_exporter_voyageur();

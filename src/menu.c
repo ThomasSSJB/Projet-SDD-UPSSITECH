@@ -23,6 +23,8 @@ struct Menu {
   OptionMenu* options;
 };
 
+Voyageur VOYAGEUR_ACTUEL = NULL;
+
 OptionMenu init_optionmenu(char* texte, FonctionMenu action) {
   OptionMenu Opt = malloc(sizeof(struct OptionMenu));
   Opt->texte = texte;
@@ -93,6 +95,7 @@ void affiche_menu(Menu menu) {
           test = 0;
           break;
         } else  if (strcmp(menu->options[choix]->texte, "Se déconnecter") == 0) {
+          free(VOYAGEUR_ACTUEL);
           endwin();
           exit(0);
           break;
@@ -140,37 +143,40 @@ void menu_connexion() {
         attron(A_REVERSE);
         mvprintw(14, 3, "Retour");
         attroff(A_REVERSE);
-      } else if (id[0] == '0') {
-        attron(A_REVERSE);
-        mvprintw(14, 3, "Accéder au profil Administrateur");
-        while (1) {
-          ch = getch();
-          if (ch == 10) {
-            attroff(A_REVERSE);
-            menu_administrateur();
-            break;
-          }
-        }
-      } else if (id[0] == '1') {
-        attron(A_REVERSE);
-        mvprintw(14, 3, "Accéder au profil Contrôleur");
-        while (1) {
-          ch = getch();
-          if (ch == 10) {
-            attroff(A_REVERSE);
-            menu_controleur();
-            break;
-          }
-        }
       } else {
-        attron(A_REVERSE);
-        mvprintw(14, 3, "Accéder au profil Voyageur");
-        while (1) {
-          ch = getch();
-          if (ch == 10) {
-            attroff(A_REVERSE);
-            menu_voyageur();
-            break;
+        VOYAGEUR_ACTUEL = init_voyageur(id, mdp);
+        if (id[0] == '0') {
+          attron(A_REVERSE);
+          mvprintw(14, 3, "Accéder au profil Administrateur");
+          while (1) {
+            ch = getch();
+            if (ch == 10) {
+              attroff(A_REVERSE);
+              menu_administrateur();
+              break;
+            }
+          }
+        } else if (id[0] == '1') {
+          attron(A_REVERSE);
+          mvprintw(14, 3, "Accéder au profil Contrôleur");
+          while (1) {
+            ch = getch();
+            if (ch == 10) {
+              attroff(A_REVERSE);
+              menu_controleur();
+              break;
+            }
+          }
+        } else {
+          attron(A_REVERSE);
+          mvprintw(14, 3, "Accéder au profil Voyageur");
+          while (1) {
+            ch = getch();
+            if (ch == 10) {
+              attroff(A_REVERSE);
+              menu_voyageur();
+              break;
+            }
           }
         }
       } 
@@ -271,14 +277,12 @@ void menu_gestion_trajets() {
 
   OptionMenu Opt1 = init_optionmenu("| Ajouter un Trajet", menu_ajouter_trajet);
   OptionMenu Opt2 = init_optionmenu("| Modifier un Trajet", menu_modifier_trajet);
-  OptionMenu Opt3 = init_optionmenu("| Supprimer un Trajet", menu_supprimer_trajet);  
-  OptionMenu Opt4 = init_optionmenu("| Ajouter Gare", menu_ajouter_gare);  
-  OptionMenu Opt5 = init_optionmenu("| Supprimer Gare", menu_supprimer_gare);
-  OptionMenu Opt6 = init_optionmenu("Retour", NULL);
+  OptionMenu Opt3 = init_optionmenu("| Supprimer un Trajet", menu_supprimer_trajet);
+  OptionMenu Opt4 = init_optionmenu("Retour", NULL);
 
-  OptionMenu liste_options[6] = {Opt1, Opt2, Opt3, Opt4, Opt5, Opt6};
+  OptionMenu liste_options[4] = {Opt1, Opt2, Opt3, Opt4};
 
-  Menu M = init_menu("Gestion des Trajets", 6, liste_options);
+  Menu M = init_menu("Gestion des Trajets", 4, liste_options);
   affiche_menu(M);
 }
 
@@ -391,18 +395,301 @@ void menu_exportation() {
 }
 
 void menu_ajouter_trajet() {
+  init_screen();
+  clear();
+
+  char id[4] = "";
+  char depart[16] = "";
+  char arrivee[16] = "";
+  char duree[16] = "";
+
+  mvprintw(0, 1, "=============================");
+  mvprintw(1, 4, "> Ajouter un Trajet");
+  mvprintw(2, 1, "=============================");
+  mvprintw(4, 3, "| Entrez l'identifiant du Trajet");
+  mvprintw(7, 3, "| Entrez une Gare de départ");
+  mvprintw(10, 3, "| Entrez une Gare d'arrivée");
+  mvprintw(13, 3, "| Entrez la durée entre ces deux gares (en h)");
+  mvprintw(16, 3, "Valider");
+
+  echo();
+  move(5, 3);
+  getnstr(id, 16);
+  move(8, 3);
+  getnstr(depart, 16);
+  move(11, 3);
+  getnstr(arrivee, 16);
+  move(14, 3);
+  getnstr(duree, 16);
+  noecho();
+
+  attron(A_REVERSE);
+  mvprintw(16, 3, "Valider");
+  attroff(A_REVERSE);
+
+  while (1){
+    int ch = getch();
+    if (ch == 10) {
+      attron(A_BOLD);
+      mvprintw(16, 3, "Valider");
+      attroff(A_BOLD);
+      if (atoi(id) == 0) {
+        mvprintw(18, 3, "Echec : l'identifiant doit être entier et différent de 0.");
+      } else if (verifier_trajet(atoi(id))) {
+        mvprintw(18, 3, "Echec : l'identifiant existe déjà.");
+      } else if (verifier_duree(atof(duree))) {
+        mvprintw(18, 3, "Echec : la durée doit être un float.");
+      } else {
+        Pile P = init_pile();
+        Gare G_dep = init_gare(depart, 0);
+        Gare G_arr = init_gare(arrivee, atof(duree));
+        empiler(P, G_dep);
+        empiler(P, G_arr);
+        Trajet T = init_trajet(P, atoi(id));
+        ajouter_trajet(T);
+        mvprintw(18, 3, "Trajet enregistré avec succès !");
+      }
+      attron(A_REVERSE);
+      mvprintw(20, 3, "Retour");
+      while (1) {
+        ch = getch();
+        if (ch == 10) {
+          attroff(A_REVERSE);
+          break;
+        }
+      } break;
+    }
+  }
 }
 
 void menu_modifier_trajet() {
+  init_screen();
+  clear();
+
+  char id[4] = "";
+
+  mvprintw(0, 1, "=============================");
+  mvprintw(1, 4, "> Modifier un Trajet");
+  mvprintw(2, 1, "=============================");
+  mvprintw(4, 3, "| Entrez l'identifiant d'un trajet");
+  mvprintw(7, 3, "Valider");
+
+  echo();
+  move(5, 3);
+  getnstr(id, 4);
+  noecho();
+  attron(A_REVERSE);
+  mvprintw(7, 3, "Valider");
+  attroff(A_REVERSE);
+  
+  while (1) {
+    int ch = getch();
+    if (ch == 10) {
+      attron(A_BOLD);
+      mvprintw(7, 3, "Valider");
+      attroff(A_BOLD);
+      if (verifier_trajet(atoi(id))) {
+        int y = affiche_trajet_ncurses(atoi(id), 0, 9, 3);
+        int selected = 0;
+        y++;
+        while (1) {
+          // Affichage des options
+          for (int i = 0; i < 3; i++) {
+            if (i == selected) attron(A_REVERSE);
+            if (i == 0) mvprintw(y + i, 3, "| Ajouter une Gare");
+            else if (i == 1) mvprintw(y + i, 3, "| Supprimer une Gare");
+            else mvprintw(y + i, 3, "Retour");
+            if (i == selected) attroff(A_REVERSE);
+          }
+          refresh();
+
+          ch = getch();
+          switch (ch) {
+            case KEY_UP:
+              selected = (selected + 2) % 3;
+              break;
+            case KEY_DOWN:
+              selected = (selected + 1) % 3;
+              break;
+            case 10: // Entrée
+              switch (selected) {
+                case 0:
+                  menu_ajouter_gare(atoi(id), y);
+                  return;
+                case 1:
+                  menu_supprimer_gare(atoi(id), y);
+                  return;
+                case 2:
+                  return;
+              }
+          }
+        }
+      } else {
+        mvprintw(9, 3, "Echec : identifiant introuvable.");
+        attron(A_REVERSE);
+        mvprintw(11, 3, "Retour");
+        while (1) {
+          ch = getch();
+          if (ch == 10) {
+            attroff(A_REVERSE);
+            break;
+          }
+        }
+      }
+      break;
+    }
+  }
 }
 
 void menu_supprimer_trajet() {
+  init_screen();
+  clear();
+
+  char id[4] = "";
+
+  mvprintw(0, 1, "=============================");
+  mvprintw(1, 4, "> Supprimer un Trajet");
+  mvprintw(2, 1, "=============================");
+  mvprintw(4, 3, "| Entrez l'identifiant d'un Trajet");
+  mvprintw(7, 3, "Valider");
+
+  echo();
+  move(5, 3);
+  getnstr(id, 16);
+  noecho();
+
+  attron(A_REVERSE);
+  mvprintw(7, 3, "Valider");
+  attroff(A_REVERSE);
+
+  while (1) {
+    int ch = getch();
+    if (ch == 10) {
+      attron(A_BOLD);
+      mvprintw(7, 3, "Valider");
+      attroff(A_BOLD);
+      char res[16];
+      mvprintw(9, 3, "| Tapez 1 pour confirmer");
+      echo();
+      move(10, 3);
+      getnstr(res, 16);
+      noecho();
+      if (!verifier_trajet(atoi(id))) {
+        mvprintw(12, 3, "Echec : identifiant introuvable.");
+      } else if (strcmp(res, "1") != 0) {
+        mvprintw(12, 3, "Le trajet n'a pas été supprimé.");
+      } else if (supprimer_trajet(atoi(id))) {
+        mvprintw(12, 3, "Le trajet a été supprimé.");
+      }
+      attron(A_REVERSE);
+      mvprintw(14, 3, "Retour");
+      while (1) {
+        ch = getch();
+        if (ch == 10) {
+          attroff(A_REVERSE);
+          break;
+        }
+      } break;
+    }
+  }
 }
 
-void menu_ajouter_gare() {
+void menu_ajouter_gare(int id, int y) {
+  char new_gare[16];
+  char gare[16];
+  char duree[16];
+  y = y+5;
+  mvprintw(y, 3, "| Entrez le nom de la nouvelle gare");
+  mvprintw(y+3, 3, "| Entrez le nom de la gare après laquelle se sera ajouté");
+  mvprintw(y+6, 3, "| Entrez la durée depuis la première gare (en h)");
+  mvprintw(y+9, 3, "Valider");
+  echo();
+  move(y+1, 3);
+  getnstr(new_gare, 16);
+  move(y+4, 3);
+  getnstr(gare, 16);
+  move(y+7, 3);
+  getnstr(duree, 16);
+  noecho();
+
+  attron(A_REVERSE);
+  mvprintw(y+9, 3, "Valider");
+  attroff(A_REVERSE);
+
+  while (1) {
+    int ch = getch();
+    if (ch == 10) {
+      attron(A_BOLD);
+      mvprintw(y+9, 3, "Valider");
+      attroff(A_BOLD);
+      if (verifier_gare(id, gare)) {
+        ajouter_gare(id, gare, new_gare, atof(duree));
+        mvprintw(y+11, 3, "La gare a été ajoutée avec succès.");
+      } else {
+        mvprintw(y+11, 3, "Echec : gare introuvable.");
+      }
+      attron(A_REVERSE);
+      mvprintw(y+13, 3, "Retour");
+      while (1) {
+        ch = getch();
+        if (ch == 10) {
+          attroff(A_REVERSE);
+          break;
+        }
+      }
+      break;
+    }
+  }
+  for (int i=-2 ; i<100 ; i++) {
+    move(y + i, 0);
+    clrtoeol();
+  }
+  menu_modifier_trajet();
 }
 
-void menu_supprimer_gare() {
+void menu_supprimer_gare(int id, int y) {
+  char gare[16];
+  y = y+5;
+  mvprintw(y++, 3, "| Entrez le nom de la Gare à supprimer");
+  mvprintw(y+2, 3, "Valider");
+  echo();
+  move(y++, 3);
+  getnstr(gare, 16);
+  noecho();
+
+  attron(A_REVERSE);
+  mvprintw(y+1, 3, "Valider");
+  attroff(A_REVERSE);
+
+  while (1) {
+    int ch = getch();
+    if (ch == 10) {
+      attron(A_BOLD);
+      mvprintw(y+1, 3, "Valider");
+      attroff(A_BOLD);
+      if (verifier_gare(id, gare)) {
+        mvprintw(y+3, 3, "La gare a été supprimée avec succès.");
+        supprimer_gare(id, gare);
+      } else {
+        mvprintw(y+3, 3, "Echec : gare introuvable.");
+      }
+      attron(A_REVERSE);
+      mvprintw(y+5, 3, "Retour");
+      while (1) {
+        ch = getch();
+        if (ch == 10) {
+          attroff(A_REVERSE);
+          break;
+        }
+      }
+      break;
+    }
+  }
+  for (int i=-2 ; i<100 ; i++) {
+    move(y + i, 0);
+    clrtoeol();
+  }
+  menu_modifier_trajet();
 }
 
 void menu_exporter_trajet() {
@@ -417,7 +704,7 @@ void menu_controleur(){
   init_screen();
 
   OptionMenu Opt1 = init_optionmenu("| Vérifier un Voyageur", menu_verifier_voyageur);
-  OptionMenu Opt2 = init_optionmenu("| Modifier son mot de passe", menu_modifier_mdp);
+  OptionMenu Opt2 = init_optionmenu("| Modifier son mot de passe", menu_modifier_coord);
   OptionMenu Opt3 = init_optionmenu("Se déconnecter", NULL);
 
   OptionMenu liste_options[3] = {Opt1, Opt2, Opt3};
@@ -427,9 +714,60 @@ void menu_controleur(){
 }
 
 void menu_verifier_voyageur() {
+
 }
 
 void menu_modifier_coord() {
+  init_screen();
+  clear();
+
+  char id[4] = "";
+  char new_mdp[16] = "";
+
+  mvprintw(0, 1, "=============================");
+  mvprintw(1, 4, "> Modifier votre mot de passe");
+  mvprintw(2, 1, "=============================");
+  mvprintw(4, 3, "| Entrez votre identifiant");
+  mvprintw(7, 3, "| Entrez votre nouveau mot de passe");
+  mvprintw(10, 3, "Valider");
+
+  echo();
+  move(5, 3);
+  getnstr(id, 16);
+  move(8, 3);
+  getnstr(new_mdp, 16);
+  noecho();
+
+  attron(A_REVERSE);
+  mvprintw(10, 3, "Valider");
+  attroff(A_REVERSE);
+
+  int y_retour = 14;
+  while (1) {
+    int ch = getch();
+    if (ch == 10) {
+      attron(A_BOLD);
+      mvprintw(10, 3, "Valider");
+      attroff(A_BOLD);
+      if (strcmp(id, getId(VOYAGEUR_ACTUEL)) != 0) {
+        mvprintw(12, 3, "Echec : identifiant incorrect.");
+      } else if (modifier_mdp(id, new_mdp)) {
+        y_retour = 22;
+      } else {
+        changer_mdp(VOYAGEUR_ACTUEL, new_mdp);
+      }
+      attron(A_REVERSE);
+      mvprintw(y_retour, 3, "Retour");
+      while (1) {
+        ch = getch();
+        if (ch == 10) {
+          attroff(A_REVERSE);
+          break;
+        }
+      }
+      break;
+    }
+  }
 }
 
 // Menus pour le Voyageur
