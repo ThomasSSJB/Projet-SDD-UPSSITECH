@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
 #include "../include/pile.h"

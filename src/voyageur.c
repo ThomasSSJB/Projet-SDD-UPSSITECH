@@ -4,12 +4,9 @@
 #include <math.h>
 #include <ncurses.h>
 #include <cjson/cJSON.h>
-#include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
 #include "../include/gestion.h"
-#include "../include/pile.h"
-#include "../include/node.h"
 
 #define MAX_LINE 256
 

@@ -2,12 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ncurses.h>
-#include "../include/place.h"
 #include "../include/trajet.h"
 #include "../include/voyageur.h"
 #include "../include/gestion.h"
-#include "../include/pile.h"
-#include "../include/node.h"
 #include "../include/menu.h"
 
 typedef void (*FonctionMenu)();
@@ -263,12 +260,11 @@ void menu_administrateur() {
   OptionMenu Opt1 = init_optionmenu("| Gestion des Trajets", menu_gestion_trajets);
   OptionMenu Opt2 = init_optionmenu("| Modifier un mot de passe", menu_modifier_mdp);
   OptionMenu Opt3 = init_optionmenu("| Supprimer un Utilisateur", menu_supprimer_user);
-  OptionMenu Opt4 = init_optionmenu("| Exportation", menu_exportation);
-  OptionMenu Opt5 = init_optionmenu("Se déconnecter", NULL);
+  OptionMenu Opt4 = init_optionmenu("Se déconnecter", NULL);
 
-  OptionMenu liste_options[5] = {Opt1, Opt2, Opt3, Opt4, Opt5};
+  OptionMenu liste_options[4] = {Opt1, Opt2, Opt3, Opt4};
 
-  Menu M = init_menu("Menu Administrateur", 5, liste_options);
+  Menu M = init_menu("Menu Administrateur", 4, liste_options);
   affiche_menu(M);
 }
 
@@ -379,19 +375,6 @@ void menu_supprimer_user() {
       } break;
     }
   }
-}
-
-void menu_exportation() {
-  init_screen();
-
-  OptionMenu Opt1 = init_optionmenu("| Exporter les Trajets", menu_exporter_trajet);
-  OptionMenu Opt2 = init_optionmenu("| Exporter les Voyageurs", menu_exporter_voyageur);
-  OptionMenu Opt3 = init_optionmenu("Retour", NULL);
-
-  OptionMenu liste_options[3] = {Opt1, Opt2, Opt3};
-
-  Menu M = init_menu("Exportation", 3, liste_options);
-  affiche_menu(M);
 }
 
 void menu_ajouter_trajet() {
@@ -690,12 +673,6 @@ void menu_supprimer_gare(int id, int y) {
     clrtoeol();
   }
   menu_modifier_trajet();
-}
-
-void menu_exporter_trajet() {
-}
-
-void menu_exporter_voyageur() {
 }
 
 // Menus pour le Contrôleur

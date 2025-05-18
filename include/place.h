@@ -24,8 +24,4 @@ Place init_place(Trajet T, Voyageur V, int etat);
  */
 int estPrise(Place P);
 
-
-void reserver_place(Place, Voyageur);
-void annuler_place(Place, Voyageur);
-
 #endif

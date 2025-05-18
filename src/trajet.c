@@ -8,7 +8,6 @@
 #include "../include/voyageur.h"
 #include "../include/gestion.h"
 #include "../include/pile.h"
-#include "../include/node.h"
 
 struct Gare{
   char* nom;
@@ -200,35 +199,6 @@ int affiche_trajet_ncurses(int id, int inverse, int y, int x) {
       y++;
   }
   return y;
-}
-
-void exporter_trajet_json(Trajet T) {
-  char nom_fichier[100];
-  sprintf(nom_fichier, "trajet_%d.json", T->id);
-  FILE *f = fopen(nom_fichier, "w");
-  if (!f) {
-    printf("Erreur lors de l'ouverture du fichier JSON\n");
-    return;
-  }
-
-  fprintf(f, "{\n");
-  fprintf(f, "  \"id_trajet\": %d,\n", T->id);
-  fprintf(f, "  \"voyageurs\": [\n");
-
-  for (int i = 0; i < T->nb_voyageurs; i++) {
-    Voyageur V = T->liste_voyageur[i];
-    fprintf(f, "    {\n");
-    fprintf(f, "      \"id\": %s,\n", getId(V));
-    fprintf(f, "      \"gare_depart\": \"%s\",\n", getGareDepart(V));
-    fprintf(f, "      \"gare_arrivee\": \"%s\"\n", getGareArrivee(V));
-    fprintf(f, "    }%s\n", (i < T->nb_voyageurs - 1) ? "," : "");
-  }
-
-  fprintf(f, "  ]\n");
-  fprintf(f, "}\n");
-
-  fclose(f);
-  printf("Export JSON terminé : %s\n", nom_fichier);
 }
 
 int verifier_trajet(int id) {

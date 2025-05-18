@@ -72,7 +72,6 @@ void supprimer_gare(int id_trajet, char* gare);
  */
 void affiche_gare(Gare G);
 
-
 /**
  * @brief Affiche une gare dans un menu ncurses
  * 
@@ -110,13 +109,6 @@ void affiche_trajet(int id, int inverse);
  * @return La prochaine coordonnée y libre après affichage
  */
 int affiche_trajet_ncurses(int id, int inverse, int y, int x);
-
-/**
- * @brief Permet d'exporter un trajet dans un fichier json
- * 
- * @param T Un trajet
- */
-void exporter_trajet_json(Trajet T);
 
 /**
  * @brief Permet de vérifier si un trajet est déjà présent dans trajets.json
