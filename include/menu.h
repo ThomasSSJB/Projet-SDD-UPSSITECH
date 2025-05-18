@@ -42,9 +42,7 @@ void menu_modifier_coord();
 void menu_voyageur();
 void menu_rechercher_trajet();
 void menu_voir_trajets();
-void menu_reserver_trajet();
 void menu_reservation();
-void menu_modifier_reservation();
-void menu_annuler_reservation();
+void menu_annuler_reservation(int);
 
 #endif

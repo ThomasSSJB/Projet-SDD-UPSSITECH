@@ -6,7 +6,30 @@
 		"mdp":	"Bbbbbb0+"
 	}, {
 		"id":	"200",
-		"mdp":	"Cccccc0+"
+		"mdp":	"Cccccc0+",
+		"reservations":	[{
+				"trajets":	[{
+						"id":	1,
+						"inversion":	1
+					}, {
+						"id":	3,
+						"inversion":	0
+					}],
+				"gare_depart":	"Toulouse",
+				"gare_arrivee":	"Lyon",
+				"gare_correspondance":	"Paris"
+			}, {
+				"trajets":	[{
+						"id":	4,
+						"inversion":	0
+					}, {
+						"id":	0,
+						"inversion":	0
+					}],
+				"gare_depart":	"Paris",
+				"gare_arrivee":	"Biarritz",
+				"gare_correspondance":	""
+			}]
 	}, {
 		"id":	"201",
 		"mdp":	"Dddddd0+"

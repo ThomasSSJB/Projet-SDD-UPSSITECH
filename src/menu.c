@@ -714,7 +714,93 @@ void menu_controleur(){
 }
 
 void menu_verifier_voyageur() {
+  init_screen();
+  clear();
 
+  char id_user[4];
+  int y = 11; 
+
+  mvprintw(0, 1, "=============================");
+  mvprintw(1, 4, "> Vérifier un Voyageur");
+  mvprintw(2, 1, "=============================");
+  mvprintw(4, 3, "| Entrez l'identifiant d'un voyageur");
+  mvprintw(7, 3, "Valider");
+  
+  echo();
+  move(5, 3);
+  getnstr(id_user, 4);
+  noecho();
+
+  attron(A_REVERSE);
+  mvprintw(7, 3, "Valider");
+  attroff(A_REVERSE);
+
+  while (1) {
+    int ch = getch();
+    if (ch == 10) {
+      attron(A_BOLD);
+      mvprintw(7, 3, "Valider");
+      attroff(A_BOLD);
+      if (verifier_user(id_user)) {
+        mvprintw(9, 3, "Echec : identifiant introuvable.");
+        y++;
+      } else {       
+        if (getNombreReservation(id_user) == 0) {
+          mvprintw(9, 3, "Aucune réservation trouvée pour le voyageur %s.", id_user);
+          attron(A_REVERSE);
+          y++;
+        } else {
+          mvprintw(9, 3, "Voici les réservations du voyageur %s :", id_user);
+          for (int i = 0; i < getNombreReservation(id_user); i++) {
+            attron(A_BOLD);
+            mvprintw(y++, 3, "| Réservation %d", i + 1);
+            attroff(A_BOLD);
+            ResRecherche res = charger_resrecherche(id_user, i);
+            int (*it)[2] = getItineraire1(res);
+            if (strcmp(getCorrespondance(res), "") == 0) {
+              mvprintw(y++, 3, "%s -> %s", getDepart(res), getArrivee(res));
+              if (it[0][1]) {
+                mvprintw(y++, 6, "( Trajet %d (Retour) )", it[0][0]);
+              } else {
+                mvprintw(y++, 6, "( Trajet %d )", it[0][0]);
+              }
+            } else {
+              int (*it1)[2] = getItineraire1(res);
+              int (*it2)[2] = getItineraire2(res);
+
+              mvprintw(y++, 3, "%s -> %s -> %s", getDepart(res), getCorrespondance(res), getArrivee(res));
+
+              int t1_id = it1[0][0];
+              int t1_inv = it1[0][1];
+              int t2_id = it2[0][0];
+              int t2_inv = it2[0][1];
+
+              if (t1_inv && t2_inv) {
+                mvprintw(y++, 6, "( Trajet %d (Retour) -> Trajet %d (Retour) )", t1_id, t2_id);
+              } else if (t1_inv) {
+                mvprintw(y++, 6, "( Trajet %d (Retour) -> Trajet %d )", t1_id, t2_id);
+              } else if (t2_inv) {
+                mvprintw(y++, 6, "( Trajet %d -> Trajet %d (Retour) )", t1_id, t2_id);
+              } else {
+                mvprintw(y++, 6, "( Trajet %d -> Trajet %d )", t1_id, t2_id);
+              }
+            }
+            y++;
+          }
+          y++;
+        }
+      }
+      attron(A_REVERSE);
+      mvprintw(y-1, 3, "Retour");
+      attroff(A_REVERSE);
+
+      while (1) {
+        ch = getch();
+        if (ch == 10) break;
+      }
+      break;
+    }
+  }
 }
 
 void menu_modifier_coord() {
@@ -821,54 +907,106 @@ void menu_rechercher_trajet() {
       refresh();
       attroff(A_BOLD);
 
-      int* res = recherche_trajet(depart, arrivee);
-      int y_menu = res[0] + 1;
+      ResRecherche res = recherche_trajet(depart, arrivee);
+      int y_menu = getYmax(res);
+      int nb_itineraires = getNbItineraire(res);
+
       int selected = 0;
-      int nb_options = (res[1] == 0) ? 1 : (res[1] == 1 ? 2 : 3);
 
       while (1) {
-        // Affichage des options
-        for (int i = 0; i < nb_options; i++) {
-          if (i == selected) attron(A_REVERSE);
-          if (res[1] == 0) {
-            mvprintw(y_menu + i, 3, "Retour");
-          } else if (res[1] == 1) {
-            mvprintw(y_menu + i, 3, i == 0 ? "| Réserver cet itinéraire" : "Retour");
-          } else {
-            if (i == 0) mvprintw(y_menu + i, 3, "| Réserver l'itinéraire 1");
-            else if (i == 1) mvprintw(y_menu + i, 3, "| Réserver l'itinéraire 2");
-            else mvprintw(y_menu + i, 3, "Retour");
-          }
-          if (i == selected) attroff(A_REVERSE);
+        if (nb_itineraires == 2) {
+          // Affichage double colonne
+          int x1 = 3, x2 = 38;
+          if (selected == 0) attron(A_REVERSE);
+          mvprintw(y_menu, x1, "| Réserver l'itinéraire 1");
+          if (selected == 0) attroff(A_REVERSE);
+
+          if (selected == 1) attron(A_REVERSE);
+          mvprintw(y_menu, x2, "| Réserver l'itinéraire 2");
+          if (selected == 1) attroff(A_REVERSE);
+
+          if (selected == 2) attron(A_REVERSE);
+          mvprintw(y_menu + 2, 3, "Retour");
+          if (selected == 2) attroff(A_REVERSE);
+        } else if (nb_itineraires == 1) {
+          // Affichage simple
+          if (selected == 0) attron(A_REVERSE);
+          mvprintw(y_menu, 3, "| Réserver cet itinéraire");
+          if (selected == 0) attroff(A_REVERSE);
+
+          if (selected == 1) attron(A_REVERSE);
+          mvprintw(y_menu + 1, 3, "Retour");
+          if (selected == 1) attroff(A_REVERSE);
+        } else {
+          // Aucun itinéraire
+          attron(A_REVERSE);
+          mvprintw(y_menu, 3, "Retour");
+          attroff(A_REVERSE);
+          refresh();
+          getch();
+          return;
         }
+
         refresh();
 
-        int input = getch();
-        switch (input) {
+        int ch = getch();
+        switch (ch) {
+          case KEY_LEFT:
+            if (nb_itineraires == 2 && selected == 1) selected = 0;
+            break;
+          case KEY_RIGHT:
+            if (nb_itineraires == 2 && selected == 0) selected = 1;
+            break;
           case KEY_UP:
-            selected = (selected + nb_options - 1) % nb_options;
+            if (nb_itineraires == 2) {
+              selected = 0;  // Aller sur itinéraire 1
+            } else if (nb_itineraires == 1 && selected == 1) {
+              selected = 0;  // Aller sur réserver
+            }
             break;
           case KEY_DOWN:
-            selected = (selected + 1) % nb_options;
+            if (nb_itineraires == 2) {
+              selected = 2;  // Aller sur retour
+            } else if (nb_itineraires == 1 && selected == 0) {
+              selected = 1;  // Aller sur retour
+            }
             break;
           case 10: // Entrée
-            switch (res[1]) {
-              case 0: // Aucun itinéraire
+            if (nb_itineraires == 2) {
+              if (selected == 0) {
+                int (*it1)[2] = getItineraire1(res);
+                if (verifierReservation(getId(VOYAGEUR_ACTUEL), it1, 2)) {
+                  mvprintw(y_menu+4, 3, "Echec : vous avez déjà réservé cet itinéraire.");
+                } else {
+                  mvprintw(y_menu+4, 3, "Cet itinéraire a été réservé avec succès !");
+                  ajouter_reservation(getId(VOYAGEUR_ACTUEL), it1, 2, getDepart(res), getArrivee(res), getCorrespondance(res));
+                }
+                break;
+              } else if (selected == 1) {
+                int (*it2)[2] = getItineraire2(res);
+                if (verifierReservation(getId(VOYAGEUR_ACTUEL), it2, 2)) {
+                  mvprintw(y_menu+4, 3, "Echec : vous avez déjà réservé cet itinéraire.");
+                } else {
+                  mvprintw(y_menu+4, 3, "Cet itinéraire a été réservé avec succès !");
+                  ajouter_reservation(getId(VOYAGEUR_ACTUEL), it2, 2, getDepart(res), getArrivee(res), getCorrespondance(res));
+                }
+                break;
+              } else {
                 return;
-              case 1:
-                if (selected == 0) {
-                  menu_reservation();
-                  return;
+              }
+            } else if (nb_itineraires == 1) {
+              if (selected == 0) {
+                int (*it1)[2] = getItineraire1(res);
+                if (verifierReservation(getId(VOYAGEUR_ACTUEL), it1, 2)) {
+                  mvprintw(y_menu+4, 3, "Echec : vous avez déjà réservé cet itinéraire.");
                 } else {
-                  return;
+                  mvprintw(y_menu+4, 3, "Cet itinéraire a été réservé avec succès !");
+                  ajouter_reservation(getId(VOYAGEUR_ACTUEL), it1, 2, getDepart(res), getArrivee(res), getCorrespondance(res));
                 }
-              case 2:
-                if (selected == 0 || selected == 1) {
-                  menu_reservation();
-                  return;
-                } else {
-                  return;
-                }
+                break;
+              } else if (selected == 1) {
+                return;
+              }
             }
           break;
         }
@@ -910,33 +1048,134 @@ void menu_voir_trajets() {
   }
 }
 
-void menu_reserver_trajet() { 
-}
-
 void menu_reservation() { 
   init_screen();
   clear();
+  int y = 4;
+  char* id_user = getId(VOYAGEUR_ACTUEL);
 
   mvprintw(0, 1, "=============================");
   mvprintw(1, 4, "> Réservation");
   mvprintw(2, 1, "=============================");
-  mvprintw(4, 1, "Retour");
+  
+  if (getNombreReservation(id_user) == 0) {
+    mvprintw(4, 3, "Vous n'avez aucune réservation.");
+    attron(A_REVERSE);
+    mvprintw(6, 3, "Retour");
+    while (1) {
+      int ch = getch();
+      if (ch == 10) {
+        attroff(A_REVERSE);
+        return;
+      }
+    }
+  } else {
+    for (int i = 0; i < getNombreReservation(id_user); i++) {
+      attron(A_BOLD);
+      mvprintw(y++, 3, "| Réservation %d", i + 1);
+      attroff(A_BOLD);
+      ResRecherche res = charger_resrecherche(id_user, i);
+      int (*it)[2] = getItineraire1(res);
+      if (strcmp(getCorrespondance(res), "") == 0) {
+        mvprintw(y++, 3, "%s -> %s", getDepart(res), getArrivee(res));
+        if (it[0][1]) {
+          mvprintw(y++, 6, "( Trajet %d (Retour) )", it[0][0]);
+        } else {
+          mvprintw(y++, 6, "( Trajet %d )", it[0][0]);
+        }
+      } else {
+        int (*it1)[2] = getItineraire1(res);
+        int (*it2)[2] = getItineraire2(res);
 
-  attron(A_REVERSE);
-  mvprintw(4, 1, "Retour");
-  refresh();
+        mvprintw(y++, 3, "%s -> %s -> %s", getDepart(res), getCorrespondance(res), getArrivee(res));
+
+        int t1_id = it1[0][0];
+        int t1_inv = it1[0][1];
+        int t2_id = it2[0][0];
+        int t2_inv = it2[0][1];
+
+        if (t1_inv && t2_inv) {
+          mvprintw(y++, 6, "( Trajet %d (Retour) -> Trajet %d (Retour) )", t1_id, t2_id);
+        } else if (t1_inv) {
+          mvprintw(y++, 6, "( Trajet %d (Retour) -> Trajet %d )", t1_id, t2_id);
+        } else if (t2_inv) {
+          mvprintw(y++, 6, "( Trajet %d -> Trajet %d (Retour) )", t1_id, t2_id);
+        } else {
+          mvprintw(y++, 6, "( Trajet %d -> Trajet %d )", t1_id, t2_id);
+        }
+      }
+      y++;
+    }
+    y++;
+  }
+
+  int nb_options = 2;
+  char* options[] = {
+    "| Supprimer une réservation",
+    "Retour"
+  };
+  int selected = 0;
+
   while (1) {
+    for (int i = 0; i < nb_options; i++) {
+      if (i == selected) attron(A_REVERSE);
+      mvprintw(y + i, 3, "%s", options[i]);
+      if (i == selected) attroff(A_REVERSE);
+    }
+
     int ch = getch();
-    if (ch == 10) {
-      attroff(A_REVERSE);
-      endwin();
-      break;
+    switch (ch) {
+      case KEY_UP:
+        selected = (selected - 1 + nb_options) % nb_options;
+        break;
+      case KEY_DOWN:
+        selected = (selected + 1) % nb_options;
+        break;
+      case 10:
+        if (selected == 0) {
+          menu_annuler_reservation(y);
+        }
+        return;
     }
   }
 }
 
-void menu_modifier_reservation() {
-}
+void menu_annuler_reservation(int y) {
+  char nb[4];
+  y += 4;
+  mvprintw(y++, 3, "| Entrez le numéro de la réservation à supprimer");
+  mvprintw(y+2, 3, "Valider");
 
-void menu_annuler_reservation() {
+  echo();
+  move(y++, 3);
+  getnstr(nb, 4);
+  noecho();
+
+  attron(A_REVERSE);
+  mvprintw(y+1, 3, "Valider");
+  attroff(A_REVERSE);
+  y++;
+
+  while (1) {
+    int ch = getch();
+    if (ch == 10) {
+      attron(A_BOLD);
+      mvprintw(y++, 3, "Valider");
+      attroff(A_BOLD);
+      if (atoi(nb) > getNombreReservation(getId(VOYAGEUR_ACTUEL))) {
+        mvprintw (y+1, 3, "Echec : réservation introuvable.");
+      } else {
+        supprimer_reservation(getId(VOYAGEUR_ACTUEL), atoi(nb)-1);
+        mvprintw (y+1, 3, "La réservation %d a été supprimé avec succès !", atoi(nb));
+      }
+      attron(A_REVERSE);
+      mvprintw(y+3, 3, "Retour");
+      attroff(A_REVERSE);
+      while (1) {
+        ch = getch();
+        if (ch == 10) break;
+      }
+      break;
+    }
+  }
 }
