@@ -74,17 +74,5 @@
 					"nom":	"Biarritz",
 					"temps":	3.5
 				}]
-		}, {
-			"id":	5,
-			"gares":	[{
-					"nom":	"Tarbes",
-					"temps":	0
-				}, {
-					"nom":	"Lannemezan",
-					"temps":	0.5
-				}, {
-					"nom":	"Toulouse",
-					"temps":	2
-				}]
 		}]
 }

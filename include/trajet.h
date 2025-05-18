@@ -1,3 +1,17 @@
+/**
+ * @mainpage Documentation du projet Gestion de Trajets
+ *
+ * Ce projet permet de gérer une compagnie de chemin de fer
+en permettant de créer des parcours (ensemble de trajets de gares) et la réservation de places sur des
+tronçons de parcours par des voyageurs. Le programme propose 3 menus :
+ * 
+ * - Menu administrateur (gestion des trajets, gestion des utilisateurs)
+ * - Menu contrôleur (vérification d'un voyageur)
+ * - Menu voyageur (recherche, choix, réservation d'un trajet)
+ *
+ * Consultez les modules et fichiers pour plus de détails.
+ */
+
 #ifndef __TRAJET_H__
 #define __TRAJET_H__
 
