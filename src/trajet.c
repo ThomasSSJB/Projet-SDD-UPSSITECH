@@ -268,47 +268,47 @@ int verifier_duree(float duree) {
 }
 
 int ajouter_trajet(Trajet trajet) {
-    cJSON* racine = charger_json("JSON/trajets.json");
-    if (!racine) return 0;
+  cJSON* racine = charger_json("JSON/trajets.json");
+  if (!racine) return 0;
 
-    cJSON* trajets = cJSON_GetObjectItem(racine, "trajets");
-    if (!trajets || !cJSON_IsArray(trajets)) {
-        cJSON_Delete(racine);
-        return 0;
-    }
-
-    cJSON* nouveau_trajet = cJSON_CreateObject();
-    cJSON_AddNumberToObject(nouveau_trajet, "id", trajet->id);
-
-    cJSON* liste_gares = cJSON_CreateArray();
-
-    // On utilise une pile temporaire pour inverser sans détruire
-    Pile pile_temp = init_pile();
-    Node n = get_pile_top(trajet->gares);
-    while (n != NULL) {
-        empiler(pile_temp, get_node_gare(n));
-        n = get_next_node(n);
-    }
-
-    // On reparcourt dans l’ordre d’origine
-    Node courant = get_pile_top(pile_temp);
-    while (courant != NULL) {
-        Gare G = get_node_gare(courant);
-        cJSON* gare = cJSON_CreateObject();
-        cJSON_AddStringToObject(gare, "nom", G->nom);
-        cJSON_AddNumberToObject(gare, "temps", G->temps);
-        cJSON_AddItemToArray(liste_gares, gare);
-        courant = get_next_node(courant);
-    }
-
-    cJSON_AddItemToObject(nouveau_trajet, "gares", liste_gares);
-    cJSON_AddItemToArray(trajets, nouveau_trajet);
-
-    int res = sauvegarder_json("JSON/trajets.json", racine);
+  cJSON* trajets = cJSON_GetObjectItem(racine, "trajets");
+  if (!trajets || !cJSON_IsArray(trajets)) {
     cJSON_Delete(racine);
-    return res;
-}
+    return 0;
+  }
 
+  cJSON* nouveau_trajet = cJSON_CreateObject();
+  cJSON_AddNumberToObject(nouveau_trajet, "id", trajet->id);
+  cJSON_AddNumberToObject(nouveau_trajet, "places_dispo", 10);
+
+  cJSON* liste_gares = cJSON_CreateArray();
+
+  // On utilise une pile temporaire pour inverser sans détruire
+  Pile pile_temp = init_pile();
+  Node n = get_pile_top(trajet->gares);
+  while (n != NULL) {
+    empiler(pile_temp, get_node_gare(n));
+    n = get_next_node(n);
+  }
+
+  // On reparcourt dans l’ordre d’origine
+  Node courant = get_pile_top(pile_temp);
+  while (courant != NULL) {
+    Gare G = get_node_gare(courant);
+    cJSON* gare = cJSON_CreateObject();
+    cJSON_AddStringToObject(gare, "nom", G->nom);
+    cJSON_AddNumberToObject(gare, "temps", G->temps);
+    cJSON_AddItemToArray(liste_gares, gare);
+    courant = get_next_node(courant);
+  }
+
+  cJSON_AddItemToObject(nouveau_trajet, "gares", liste_gares);
+  cJSON_AddItemToArray(trajets, nouveau_trajet);
+
+  int res = sauvegarder_json("JSON/trajets.json", racine);
+  cJSON_Delete(racine);
+  return res;
+}
 
 int supprimer_trajet(int id_trajet) {
     cJSON* racine = charger_json("JSON/trajets.json");
@@ -336,3 +336,65 @@ int supprimer_trajet(int id_trajet) {
     cJSON_Delete(racine);
     return 0;
 }
+
+int get_places_dispo(int id) {
+  cJSON* racine = charger_json("JSON/trajets.json");
+  if (!racine) return -1;
+
+  cJSON* trajets = cJSON_GetObjectItem(racine, "trajets");
+  if (!trajets || !cJSON_IsArray(trajets)) {
+    cJSON_Delete(racine);
+    return -1;
+  }
+
+  cJSON* trajet = NULL;
+  cJSON_ArrayForEach(trajet, trajets) {
+    cJSON* id_obj = cJSON_GetObjectItem(trajet, "id");
+    if (id_obj && cJSON_IsNumber(id_obj) && id_obj->valueint == id) {
+      cJSON* places = cJSON_GetObjectItem(trajet, "places_dispo");
+      if (places && cJSON_IsNumber(places)) {
+        int res = places->valueint;
+        cJSON_Delete(racine);
+        return res;
+      } else {
+        cJSON_Delete(racine);
+        return -1; 
+      }
+    }
+  }
+  cJSON_Delete(racine);
+  return -1;
+}
+
+int set_places_dispo(int id, int nb) {
+    cJSON* racine = charger_json("JSON/trajets.json");
+    if (!racine) return 0;
+
+    cJSON* trajets = cJSON_GetObjectItem(racine, "trajets");
+    if (!trajets || !cJSON_IsArray(trajets)) {
+      cJSON_Delete(racine);
+      return 0;
+    }
+
+    cJSON* trajet = NULL;
+    cJSON_ArrayForEach(trajet, trajets) {
+      cJSON* id_obj = cJSON_GetObjectItem(trajet, "id");
+      if (id_obj && cJSON_IsNumber(id_obj) && id_obj->valueint == id) {
+        // Supprime si le champ existait déjà
+        cJSON_DeleteItemFromObject(trajet, "places_dispo");
+
+        // Ajoute le nouveau champ avec la bonne valeur
+        cJSON_AddNumberToObject(trajet, "places_dispo", nb);
+
+        // Sauvegarde
+        int res = sauvegarder_json("JSON/trajets.json", racine);
+        cJSON_Delete(racine);
+        return res;
+      }
+    }
+
+    cJSON_Delete(racine);
+    return 0; // Trajet non trouvé
+}
+
+

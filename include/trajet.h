@@ -167,4 +167,21 @@ int supprimer_trajet(int id_trajet);
  */
 Trajet trajet_voyageur(int id);
 
+/**
+ * @brief Permet de rechercher le nombre de places disponibles d'un trajet
+ * 
+ * @param id Identifiant du trajet
+ * @return Nombre de places disponibles
+ */
+int get_places_dispo(int id);
+
+/**
+ * @brief Permet de mettre à jour le nombre de places disponibles d'un trajet
+ * 
+ * @param id Identifiant du trajet
+ * @param nb Nouvelle valeur de places_dispo
+ * @return Nombre de places disponibles
+ */
+int set_places_dispo(int id, int nb);
+
 #endif

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<minder version="1.14.0" parent-etag="2748256005" etag="1635824933">
+<minder version="1.14.0" parent-etag="636972507" etag="2557181338">
   <theme name="default" label="Light" index="-1"/>
   <styles>
     <style level="0" isset="false" branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="10" nodepadding="10" nodefont="Sans 11" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
@@ -14,192 +14,192 @@
     <style level="9" isset="false" branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
     <style level="10" isset="false" branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
   </styles>
-  <drawarea x="-41.484375000000341" y="-102.63788955434239" scale="1.2303259258018342"/>
+  <drawarea x="-200.5061749626625" y="-181.39544699010216" scale="1"/>
   <images/>
   <nodes>
-    <node id="0" posx="544.51302083333337" posy="43.903514554342621" width="135" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="0" posx="703.53482079599542" posy="122.66107199010239" width="135" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="192" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="558.51302083333337" posy="57.903514554342621" maxwidth="184.36197916666669">
+      <nodename posx="717.53482079599542" posy="136.66107199010239" maxwidth="184.36197916666669">
         <text data="Menu Principal"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="1" posx="148.77864583333383" posy="171.80716038767611" width="137" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="1" posx="332.37155180621676" posy="244.94184293726181" width="137" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="170" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="162.77864583333383" posy="185.80716038767611" maxwidth="165.96614583333331">
+      <nodename posx="346.37155180621676" posy="258.94184293726181" maxwidth="165.96614583333331">
         <text data="Administrateur"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="2" posx="559.7734375000008" posy="163.97643122100936" width="105" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="2" posx="718.79523746266284" posy="242.73398865676913" width="105" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="573.7734375000008" posy="177.97643122100936" maxwidth="200">
+      <nodename posx="732.79523746266284" posy="256.73398865676916" maxwidth="200">
         <text data="Contr&#xF4;leur"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="3" posx="943.17578124999591" posy="161.93216038767588" width="104" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="3" posx="1105.6975812126577" posy="240.68971782343564" width="97" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="957.17578124999591" posy="175.93216038767588" maxwidth="200">
-        <text data="Utilisateur"/>
+      <nodename posx="1119.6975812126577" posy="254.68971782343564" maxwidth="200">
+        <text data="Voyageur"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="5" posx="17.48890971264791" posy="327.17404760534521" width="169" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="5" posx="209.31451731164566" posy="404.03614693435969" width="169" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="31.48890971264791" posy="341.17404760534521" maxwidth="200">
+      <nodename posx="223.31451731164566" posy="418.03614693435969" maxwidth="200">
         <text data="Gestion des Trajets"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="6" posx="228.34881277977809" posy="325.42236127977355" width="135" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="6" posx="419.98709704829344" posy="401.72566558904401" width="135" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="242.34881277977809" posy="339.42236127977355" maxwidth="200">
+      <nodename posx="433.98709704829344" posy="415.72566558904401" maxwidth="200">
         <text data="Administration"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="10" posx="822.56510416666401" posy="327.49335830434262" width="157" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="10" posx="981.58690412932538" posy="406.25091574010236" width="157" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="836.56510416666401" posy="341.49335830434262" maxwidth="200">
+      <nodename posx="995.58690412932538" posy="420.25091574010236" maxwidth="200">
         <text data="Rechercher Trajet"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="11" posx="977.63541666666333" posy="327.64960830434262" width="220" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="11" posx="1181.7484782033991" posy="404.81650491685383" width="116" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="991.63541666666333" posy="341.64960830434262" maxwidth="200">
-        <text data="R&#xE9;servation / Modification"/>
+      <nodename posx="1195.7484782033991" posy="418.81650491685383" maxwidth="200">
+        <text data="R&#xE9;servation"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="12" posx="28.745494541675328" posy="412.21687872705121" width="150" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="12" posx="218.23114799549512" posy="491.85707829627023" width="150" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="42.745494541675328" posy="426.21687872705121" maxwidth="200">
+      <nodename posx="232.23114799549512" posy="505.85707829627023" maxwidth="200">
         <text data="Ajouter un Trajet"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="13" posx="25.395808520348396" posy="447.07826879143204" width="156" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="13" posx="215.748229249112" posy="524.61981206490805" width="156" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="39.395808520348396" posy="461.07826879143204" maxwidth="200">
+      <nodename posx="229.748229249112" posy="538.61981206490805" maxwidth="200">
         <text data="Modifier un Trajet"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="14" posx="19.275847976451985" posy="482.24670127564588" width="172" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="14" posx="207.73281059847022" posy="559.65172076588897" width="172" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="33.275847976451985" posy="496.24670127564588" maxwidth="200">
+      <nodename posx="221.73281059847022" posy="573.65172076588897" maxwidth="200">
         <text data="Supprimer un Trajet"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="17" posx="235.04797935070275" posy="412.24333702847065" width="127" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="17" posx="414.34807108960217" posy="488.59426591328753" width="150" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="249.04797935070275" posy="426.24333702847065" maxwidth="200">
-        <text data="Changer MDP"/>
+      <nodename posx="428.34807108960217" posy="502.59426591328753" maxwidth="200">
+        <text data="Changer un MDP"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="21" posx="831.20442708333189" posy="400.96601455434228" width="140" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="21" posx="990.22622704599326" posy="479.72357199010202" width="140" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="845.20442708333189" posy="414.96601455434228" maxwidth="200">
+      <nodename posx="1004.2262270459933" posy="493.72357199010202" maxwidth="200">
         <text data="R&#xE9;server Trajet"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="23" posx="999.86267656313657" posy="400.98231753658132" width="177" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="23" posx="1153.0919538101086" posy="478.76345407779422" width="177" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="1013.8626765631366" posy="414.98231753658132" maxwidth="200">
+      <nodename posx="1167.0919538101086" posy="492.76345407779422" maxwidth="200">
         <text data="Annuler R&#xE9;servation"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="24" posx="619.30098935461729" posy="327.1849818873693" width="156" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="24" posx="778.32278931727933" posy="405.9425393231291" width="156" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="633.30098935461729" posy="341.1849818873693" maxwidth="200">
+      <nodename posx="792.32278931727933" posy="419.9425393231291" maxwidth="200">
         <text data="Modifier son MDP"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="25" posx="450.02235735060026" posy="327.51809985569389" width="154" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="25" posx="609.0441573132623" posy="406.27565729145368" width="154" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="464.02235735060026" posy="341.51809985569389" maxwidth="200">
+      <nodename posx="623.0441573132623" posy="420.27565729145368" maxwidth="200">
         <text data="V&#xE9;rifier Voyageur"/>
       </nodename>
       <nodenote></nodenote>
     </node>
-    <node id="26" posx="227.78256577967562" posy="447.58175601314389" width="142" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
+    <node id="26" posx="386.8256008970983" posy="525.12329928661984" width="207" height="46" side="right" fold="false" treesize="46" layout="Horizontal" group="false">
       <style branchmargin="100" branchradius="25" linktype="straight" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="underlined" nodewidth="200" nodeborderwidth="4" nodefill="false" nodemargin="8" nodepadding="6" nodefont="Sans 11" nodemarkup="true"/>
-      <nodename posx="241.78256577967562" posy="461.58175601314389" maxwidth="200">
-        <text data="Supprimer User"/>
+      <nodename posx="400.8256008970983" posy="539.12329928661984" maxwidth="200">
+        <text data="Supprimer un Utilisateur"/>
       </nodename>
       <nodenote></nodenote>
     </node>
   </nodes>
   <groups/>
   <connections>
-    <connection from_id="0" to_id="1" drag_x="414.64583333333246" drag_y="130.8553374710088">
+    <connection from_id="0" to_id="1" drag_x="585.95318630110478" drag_y="206.80145746368154">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="0" to_id="2" drag_x="612.14322916666674" drag_y="126.93997288767554">
+    <connection from_id="0" to_id="2" drag_x="771.16502912932879" drag_y="205.6975303234353">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="0" to_id="3" drag_x="803.59440104167061" drag_y="125.91783747100857">
+    <connection from_id="0" to_id="3" drag_x="962.61620100433265" drag_y="204.67539490676833">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="1" to_id="5" drag_x="159.63377777299081" drag_y="272.49060399651034">
+    <connection from_id="1" to_id="5" drag_x="347.34303455893109" drag_y="347.48899493581041">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="1" to_id="6" drag_x="256.56372930655465" drag_y="271.61476083372429">
+    <connection from_id="1" to_id="6" drag_x="444.17932442725373" drag_y="346.33375426315229">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="3" to_id="10" drag_x="948.12044270833439" drag_y="267.71275934600851">
+    <connection from_id="3" to_id="10" drag_x="1107.1422426709964" drag_y="346.47031678176813">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="3" to_id="11" drag_x="1041.4055989583303" drag_y="267.79088434600851">
+    <connection from_id="3" to_id="11" drag_x="1196.9730297080287" drag_y="345.75311137014387">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="5" to_id="12" drag_x="102.86720212716125" drag_y="392.69546316619704">
+    <connection from_id="5" to_id="12" drag_x="293.52283265357016" drag_y="470.94661261531382">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="6" to_id="17" drag_x="297.19839606523942" drag_y="391.83284915412275">
+    <connection from_id="6" to_id="17" drag_x="488.41758406894667" drag_y="468.15996575116628">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="10" to_id="21" drag_x="901.134765625" drag_y="387.22968642934268">
+    <connection from_id="10" to_id="21" drag_x="1060.156565587662" drag_y="465.9872438651023">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="2" to_id="25" drag_x="569.64789742530104" drag_y="268.74726553835126">
+    <connection from_id="2" to_id="25" drag_x="728.6696973879632" drag_y="347.50482297411088">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="2" to_id="24" drag_x="654.78721342730933" drag_y="268.58070655418942">
+    <connection from_id="2" to_id="24" drag_x="813.80901338997137" drag_y="347.33826398994904">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>
     </connection>
-    <connection from_id="11" to_id="23" drag_x="1087.9990466149002" drag_y="387.31596292046174">
+    <connection from_id="11" to_id="23" drag_x="1240.6702160067534" drag_y="464.78997949732366">
       <style connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
       <title></title>
       <note></note>

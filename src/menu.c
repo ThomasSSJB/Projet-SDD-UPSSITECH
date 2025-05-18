@@ -952,20 +952,32 @@ void menu_rechercher_trajet() {
             if (nb_itineraires == 2) {
               if (selected == 0) {
                 int (*it1)[2] = getItineraire1(res);
+                int it1_places1 = get_places_dispo(it1[0][0]);
+                int it1_places2 = get_places_dispo(it1[1][0]);
                 if (verifierReservation(getId(VOYAGEUR_ACTUEL), it1, 2)) {
                   mvprintw(y_menu+4, 3, "Echec : vous avez déjà réservé cet itinéraire.");
+                } else if ( (it1_places1 == 0) || (it1_places2 == 0)) {
+                  mvprintw(y_menu+4, 3, "Echec : train complet.");
                 } else {
                   mvprintw(y_menu+4, 3, "Cet itinéraire a été réservé avec succès !");
                   ajouter_reservation(getId(VOYAGEUR_ACTUEL), it1, 2, getDepart(res), getArrivee(res), getCorrespondance(res));
+                  set_places_dispo(it1[0][0], it1_places1 - 1);
+                  set_places_dispo(it1[1][0], it1_places2 - 1);
                 }
                 break;
               } else if (selected == 1) {
                 int (*it2)[2] = getItineraire2(res);
-                if (verifierReservation(getId(VOYAGEUR_ACTUEL), it2, 2)) {
+                int it2_places1 = get_places_dispo(it2[0][0]);
+                int it2_places2 = get_places_dispo(it2[1][0]);
+                 if (verifierReservation(getId(VOYAGEUR_ACTUEL), it2, 2)) {
                   mvprintw(y_menu+4, 3, "Echec : vous avez déjà réservé cet itinéraire.");
+                } else if ( (it2_places1 == 0) || (it2_places2 == 0)) {
+                  mvprintw(y_menu+4, 3, "Echec : train complet.");
                 } else {
                   mvprintw(y_menu+4, 3, "Cet itinéraire a été réservé avec succès !");
                   ajouter_reservation(getId(VOYAGEUR_ACTUEL), it2, 2, getDepart(res), getArrivee(res), getCorrespondance(res));
+                  set_places_dispo(it2[0][0], it2_places1 - 1);
+                  set_places_dispo(it2[1][0], it2_places2 - 1);
                 }
                 break;
               } else {
@@ -974,11 +986,15 @@ void menu_rechercher_trajet() {
             } else if (nb_itineraires == 1) {
               if (selected == 0) {
                 int (*it1)[2] = getItineraire1(res);
+                int it1_places1 = get_places_dispo(it1[0][0]);
                 if (verifierReservation(getId(VOYAGEUR_ACTUEL), it1, 2)) {
                   mvprintw(y_menu+4, 3, "Echec : vous avez déjà réservé cet itinéraire.");
+                } else if (it1_places1 == 0) {
+                  mvprintw(y_menu+4, 3, "Echec : train complet.");
                 } else {
                   mvprintw(y_menu+4, 3, "Cet itinéraire a été réservé avec succès !");
                   ajouter_reservation(getId(VOYAGEUR_ACTUEL), it1, 2, getDepart(res), getArrivee(res), getCorrespondance(res));
+                  set_places_dispo(it1[0][0], it1_places1 - 1);
                 }
                 break;
               } else if (selected == 1) {
@@ -1139,11 +1155,25 @@ void menu_annuler_reservation(int y) {
       attron(A_BOLD);
       mvprintw(y++, 3, "Valider");
       attroff(A_BOLD);
-      if (atoi(nb) > getNombreReservation(getId(VOYAGEUR_ACTUEL))) {
-        mvprintw (y+1, 3, "Echec : réservation introuvable.");
+      if ( (atoi(nb) > getNombreReservation(getId(VOYAGEUR_ACTUEL))) || ((strcmp(nb, "")) == 0) )  {
+          mvprintw(y+1, 3, "Echec : réservation introuvable.");
       } else {
-        supprimer_reservation(getId(VOYAGEUR_ACTUEL), atoi(nb)-1);
-        mvprintw (y+1, 3, "La réservation %d a été supprimé avec succès !", atoi(nb));
+          int num_res = atoi(nb) - 1;
+          ResRecherche res = charger_resrecherche(getId(VOYAGEUR_ACTUEL), num_res);
+
+          int (*it1)[2] = getItineraire1(res);
+          int trajet1_id = it1[0][0];
+          set_places_dispo(trajet1_id, get_places_dispo(trajet1_id) + 1);
+
+          // Si correspondance, il y a un 2e trajet
+          if (strcmp(getCorrespondance(res), "") != 0) {
+              int (*it2)[2] = getItineraire2(res);
+              int trajet2_id = it2[0][0];
+              set_places_dispo(trajet2_id, get_places_dispo(trajet2_id) + 1);
+          }
+
+          supprimer_reservation(getId(VOYAGEUR_ACTUEL), num_res);
+          mvprintw(y+1, 3, "La réservation %d a été supprimée avec succès !", atoi(nb));
       }
       attron(A_REVERSE);
       mvprintw(y+3, 3, "Retour");
