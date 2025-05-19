@@ -20,15 +20,42 @@
 					"nom":	"Toulouse",
 					"temps":	6
 				}],
-			"places_dispo":	8
+			"places_dispo":	9
+		}, {
+			"id":	3,
+			"gares":	[{
+					"nom":	"Paris",
+					"temps":	0
+				}, {
+					"nom":	"Lyon",
+					"temps":	1.5
+				}, {
+					"nom":	"Marseille",
+					"temps":	3
+				}],
+			"places_dispo":	9
+		}, {
+			"id":	4,
+			"gares":	[{
+					"nom":	"Paris",
+					"temps":	0
+				}, {
+					"nom":	"Tours",
+					"temps":	1
+				}, {
+					"nom":	"Bordeaux",
+					"temps":	2
+				}, {
+					"nom":	"Biarritz",
+					"temps":	3.5
+				}],
+			"places_dispo":	10
 		}, {
 			"id":	2,
+			"places_dispo":	10,
 			"gares":	[{
 					"nom":	"Bordeaux",
 					"temps":	0
-				}, {
-					"nom":	"Agen",
-					"temps":	1
 				}, {
 					"nom":	"Montauban",
 					"temps":	2
@@ -47,36 +74,6 @@
 				}, {
 					"nom":	"Nice",
 					"temps":	8.5
-				}],
-			"places_dispo":	8
-		}, {
-			"id":	3,
-			"gares":	[{
-					"nom":	"Paris",
-					"temps":	0
-				}, {
-					"nom":	"Lyon",
-					"temps":	1.5
-				}, {
-					"nom":	"Marseille",
-					"temps":	3
-				}],
-			"places_dispo":	7
-		}, {
-			"id":	4,
-			"gares":	[{
-					"nom":	"Paris",
-					"temps":	0
-				}, {
-					"nom":	"Tours",
-					"temps":	1
-				}, {
-					"nom":	"Bordeaux",
-					"temps":	2
-				}, {
-					"nom":	"Biarritz",
-					"temps":	3.5
-				}],
-			"places_dispo":	5
+				}]
 		}]
 }
