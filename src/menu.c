@@ -92,7 +92,7 @@ void affiche_menu(Menu menu) {
           test = 0;
           break;
         } else  if (strcmp(menu->options[choix]->texte, "Se déconnecter") == 0) {
-          free(VOYAGEUR_ACTUEL);
+          liberer_voyageur(VOYAGEUR_ACTUEL);
           endwin();
           exit(0);
           break;
@@ -686,7 +686,7 @@ void menu_controleur(){
 
   OptionMenu liste_options[3] = {Opt1, Opt2, Opt3};
 
-  Menu M = init_menu("Menu Contôleur", 3, liste_options);
+  Menu M = init_menu("Menu Contrôleur", 3, liste_options);
   affiche_menu(M);
 }
 
@@ -1001,6 +1001,7 @@ void menu_rechercher_trajet() {
                 return;
               }
             }
+          liberer_resrecherche(res);
           break;
         }
       }

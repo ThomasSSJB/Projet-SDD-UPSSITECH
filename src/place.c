@@ -21,3 +21,9 @@ Place init_place(Trajet T, Voyageur V, int etat){
 int estPrise(Place P){
   return P->etat;
 }
+
+void liberer_place(Place P) {
+  free(P->T);
+  free(P->V);
+  free(P);
+}

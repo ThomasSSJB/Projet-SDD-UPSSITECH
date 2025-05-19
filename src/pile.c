@@ -54,3 +54,13 @@ Gare depiler(Pile P) {
 Node get_pile_top(Pile P) {
     return P->top;
 }
+
+void liberer_pile(Pile P) {
+    Node courant = P->top;
+    while (courant != NULL) {
+        Node suivant = get_next_node(courant);
+        liberer_node(courant);
+        courant = suivant;
+    }
+    free(P);
+}

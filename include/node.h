@@ -45,4 +45,11 @@ void set_next_node(Node n, Node next);
  */
 void set_node_gare(Node n, Gare G);
 
+/**
+ * @brief Permet de libérer la mémoire allouer à un Node
+ * 
+ * @param n Node à libérer
+ */
+void liberer_node(Node n);
+
 #endif

@@ -52,4 +52,11 @@ Gare depiler(Pile P);
  */
 Node get_pile_top(Pile P);
 
+/**
+ * @brief Permet de libérer la mémoire allouer à une Pile
+ * 
+ * @param P Pile à libérer
+ */
+void liberer_pile(Pile P);
+
 #endif

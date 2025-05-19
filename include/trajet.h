@@ -184,4 +184,18 @@ int get_places_dispo(int id);
  */
 int set_places_dispo(int id, int nb);
 
+/**
+ * @brief Permet de libérer la mémoire allouer à une Gare
+ * 
+ * @param G Gare à libérer
+ */
+void liberer_gare(Gare G);
+
+/**
+ * @brief Permet de libérer la mémoire allouer à une Trajet
+ * 
+ * @param T Trajet à libérer
+ */
+void liberer_trajet(Trajet T);
+
 #endif

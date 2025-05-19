@@ -52,9 +52,10 @@ int ajouter_utilisateur(char* id, char* mdp) {
     }
   }
 
+  char* mdp_chiffre = chiffrer(mdp, 10);
   cJSON* nouvel_utilisateur = cJSON_CreateObject();
   cJSON_AddStringToObject(nouvel_utilisateur, "id", id);
-  cJSON_AddStringToObject(nouvel_utilisateur, "mdp", mdp);
+  cJSON_AddStringToObject(nouvel_utilisateur, "mdp", mdp_chiffre);
   cJSON_AddItemToArray(root, nouvel_utilisateur);
 
   if (!sauvegarder_json("JSON/users.json", root)) {
@@ -113,13 +114,14 @@ int verifier_connexion(char* id, char* mdp) {
     return -1;
   }
 
+  char* mdp_chiffre = chiffrer(mdp, 10);
   cJSON* utilisateur = NULL;
   cJSON_ArrayForEach(utilisateur, racine) {
     cJSON* id_json = cJSON_GetObjectItem(utilisateur, "id");
     cJSON* mdp_json = cJSON_GetObjectItem(utilisateur, "mdp");
 
     if (id_json && mdp_json && strcmp(id_json->valuestring, id) == 0) {
-      if (strcmp(mdp_json->valuestring, mdp) == 0) {
+      if (strcmp(mdp_json->valuestring, mdp_chiffre) == 0) {
         mvprintw(12, 3, "Authentification réussie !");
         cJSON_Delete(racine);
         return 0;
@@ -155,8 +157,9 @@ int modifier_mdp(char* id, char* new_mdp) {
         return 1;
       }
       cJSON* mdp_json = cJSON_GetObjectItem(utilisateur, "mdp");
+      char* mdp_chiffre = chiffrer(new_mdp, 10);
       if (mdp_json) {
-        cJSON_SetValuestring(mdp_json, new_mdp);
+        cJSON_SetValuestring(mdp_json, mdp_chiffre);
         trouve = 1;
         break;
       }
@@ -173,4 +176,14 @@ int modifier_mdp(char* id, char* new_mdp) {
   mvprintw(12, 3, "Mot de passe modifié avec succès !");
   cJSON_Delete(racine);
   return 0;
+}
+
+char* chiffrer(char* mdp, int cle) {
+  int taille = strlen(mdp);
+  char* new_mdp = malloc(taille + 1);
+  for (int i=0 ; i<taille ; i++) {
+    new_mdp[i] = mdp[i] + cle;
+  }
+  new_mdp[taille] = '\0';
+  return new_mdp;
 }

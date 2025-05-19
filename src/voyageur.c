@@ -587,3 +587,11 @@ ResRecherche charger_resrecherche(char* id_user, int index) {
   cJSON_Delete(racine);
   return NULL;
 }
+
+void liberer_voyageur(Voyageur V) {
+  free(V);
+}
+
+void liberer_resrecherche(ResRecherche R) {
+  free(R);
+}

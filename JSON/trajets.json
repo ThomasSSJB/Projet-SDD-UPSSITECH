@@ -20,7 +20,7 @@
 					"nom":	"Toulouse",
 					"temps":	6
 				}],
-			"places_dispo":	9
+			"places_dispo":	8
 		}, {
 			"id":	2,
 			"gares":	[{
@@ -48,7 +48,7 @@
 					"nom":	"Nice",
 					"temps":	8.5
 				}],
-			"places_dispo":	9
+			"places_dispo":	8
 		}, {
 			"id":	3,
 			"gares":	[{
@@ -61,7 +61,7 @@
 					"nom":	"Marseille",
 					"temps":	3
 				}],
-			"places_dispo":	8
+			"places_dispo":	7
 		}, {
 			"id":	4,
 			"gares":	[{
@@ -77,6 +77,6 @@
 					"nom":	"Biarritz",
 					"temps":	3.5
 				}],
-			"places_dispo":	7
+			"places_dispo":	5
 		}]
 }

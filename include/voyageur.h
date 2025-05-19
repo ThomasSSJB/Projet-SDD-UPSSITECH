@@ -215,4 +215,18 @@ int getNombreReservation(char* id_user);
  */
 ResRecherche charger_resrecherche(char* id_user, int index);
 
+/**
+ * @brief Permet de libérer la mémoire allouer à un Voyageur
+ * 
+ * @param V Voyageur à libérer
+ */
+ void liberer_voyageur(Voyageur V);
+
+ /**
+ * @brief Permet de libérer la mémoire allouer à une Résultat de Recherche de trajets
+ * 
+ * @param P Résultat de Recherche de trajets à libérer
+ */
+ void liberer_resrecherche(ResRecherche R);
+
 #endif

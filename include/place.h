@@ -24,4 +24,11 @@ Place init_place(Trajet T, Voyageur V, int etat);
  */
 int estPrise(Place P);
 
+/**
+ * @brief Permet de libérer la mémoire allouer à une place
+ * 
+ * @param P Place à libérer
+ */
+void liberer_place(Place P);
+
 #endif

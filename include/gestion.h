@@ -55,4 +55,13 @@ int supprimer_utilisateur(char* id);
  */
  int modifier_mdp(char* id, char* new_mdp);
 
+ /**
+ * @brief Permet de chiffre un mot de passe
+ * 
+ * @param mdp Mot de passe à chiffrer
+ * @param cle Clé de chiffrement (pour déchiffrer, entrer '-cle')
+ * @return Mot de passe chiffrer
+ */
+ char* chiffrer(char* mdp, int cle);
+
 #endif

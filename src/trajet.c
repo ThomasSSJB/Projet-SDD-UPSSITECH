@@ -397,4 +397,14 @@ int set_places_dispo(int id, int nb) {
     return 0; // Trajet non trouvé
 }
 
+void liberer_gare(Gare G) {
+  free(G);
+}
 
+void liberer_trajet(Trajet T) {
+  for (int i = 0; i < T->nb_voyageurs; i++) {
+    liberer_voyageur(T->liste_voyageur[i]);
+  }
+  liberer_pile(T->gares);
+  free(T);
+}
